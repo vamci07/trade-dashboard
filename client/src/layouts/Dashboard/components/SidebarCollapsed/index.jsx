@@ -27,7 +27,8 @@ import {
   ImageOutlined as ImageIcon,
   InfoOutlined as InfoIcon,
   AccountBoxOutlined as AccountBoxIcon,
-  SettingsOutlined as SettingsIcon
+  SettingsOutlined as SettingsIcon,
+  BusinessCenter as BusinessIcon
 } from '@material-ui/icons';
 
 // Component styles
@@ -43,11 +44,9 @@ class SidebarCollapsed extends Component {
       <nav className={rootClassName}>
         <div className={classes.logoWrapper}>
           <Link className={classes.logoLink} to="/">
-            <img
-              alt="Brainalytica logo"
-              className={classes.logoImage}
-              src="/images/logos/stex-logo.png"
-            />
+            <ListItemIcon className={classes.logoImage}>
+              <BusinessIcon />
+            </ListItemIcon>
           </Link>
         </div>
         <Divider className={classes.logoDivider} />
@@ -158,3 +157,11 @@ SidebarCollapsed.propTypes = {
 };
 
 export default withStyles(styles)(SidebarCollapsed);
+
+/*
+<img
+  alt="Brainalytica logo"
+  className={classes.logoImage}
+  src="/images/logos/stex-logo.png"
+/>
+*/

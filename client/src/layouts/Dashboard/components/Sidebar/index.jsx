@@ -30,7 +30,8 @@ import {
   ImageOutlined as ImageIcon,
   InfoOutlined as InfoIcon,
   AccountBoxOutlined as AccountBoxIcon,
-  SettingsOutlined as SettingsIcon
+  SettingsOutlined as SettingsIcon,
+  BusinessCenter as BusinessIcon
 } from '@material-ui/icons';
 
 // Component styles
@@ -45,16 +46,14 @@ class Sidebar extends Component {
     return (
       <nav className={rootClassName}>
         <div className={classes.logoWrapper}>
-          <Link
-            className={classes.logoLink}
-            to="/"
-          >
-            <img
-              alt="Trade Dash"
-              className={classes.logoImage}
-              src="/images/logos/stex-logo.png"
-            />
+          <Link className={classes.logoLink} to="/">
+            <div>
+              <ListItemIcon className={classes.logoImage}>
+                <BusinessIcon />
+              </ListItemIcon>
+            </div>
           </Link>
+          <Typography variant="h4">Trade Dash</Typography>
         </div>
         <Divider className={classes.logoDivider} />
         <div className={classes.profile}>
@@ -65,30 +64,20 @@ class Sidebar extends Component {
               src="/images/avatars/high-res.png"
             />
           </Link>
-          <Typography
-            className={classes.nameText}
-            variant="h6"
-          >
+          <Typography className={classes.nameText} variant="h6">
             Full Name
           </Typography>
-          <Typography
-            className={classes.bioText}
-            variant="caption"
-          >
+          <Typography className={classes.bioText} variant="caption">
             Role/Title
           </Typography>
         </div>
         <Divider className={classes.profileDivider} />
-        <List
-          component="div"
-          disablePadding
-        >
+        <List component="div" disablePadding>
           <ListItem
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/dashboard"
-          >
+            to="/dashboard">
             <ListItemIcon className={classes.listItemIcon}>
               <DashboardIcon />
             </ListItemIcon>
@@ -101,8 +90,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/users"
-          >
+            to="/users">
             <ListItemIcon className={classes.listItemIcon}>
               <PeopleIcon />
             </ListItemIcon>
@@ -115,8 +103,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/products"
-          >
+            to="/products">
             <ListItemIcon className={classes.listItemIcon}>
               <ShoppingBasketIcon />
             </ListItemIcon>
@@ -129,8 +116,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/sign-in"
-          >
+            to="/sign-in">
             <ListItemIcon className={classes.listItemIcon}>
               <LockOpenIcon />
             </ListItemIcon>
@@ -143,8 +129,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/typography"
-          >
+            to="/typography">
             <ListItemIcon className={classes.listItemIcon}>
               <TextFieldsIcon />
             </ListItemIcon>
@@ -157,8 +142,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/icons"
-          >
+            to="/icons">
             <ListItemIcon className={classes.listItemIcon}>
               <ImageIcon />
             </ListItemIcon>
@@ -171,8 +155,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/account"
-          >
+            to="/account">
             <ListItemIcon className={classes.listItemIcon}>
               <AccountBoxIcon />
             </ListItemIcon>
@@ -185,8 +168,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/settings"
-          >
+            to="/settings">
             <ListItemIcon className={classes.listItemIcon}>
               <SettingsIcon />
             </ListItemIcon>
@@ -204,14 +186,12 @@ class Sidebar extends Component {
             <ListSubheader className={classes.listSubheader}>
               Support
             </ListSubheader>
-          }
-        >
+          }>
           <ListItem
             className={classes.listItem}
             component="a"
             href="https://devias.io/contact-us"
-            target="_blank"
-          >
+            target="_blank">
             <ListItemIcon className={classes.listItemIcon}>
               <InfoIcon />
             </ListItemIcon>

@@ -1,6 +1,20 @@
 import palette from './palette';
 
 export default {
+  useNextVariants: true,
+  fontFamily: [
+    'Lato',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"'
+  ].join(','),
   h1: {
     color: palette.text.primary,
     fontWeight: '500',

@@ -26,7 +26,7 @@ class Dashboard extends Component {
     const isMobile = ['xs', 'sm', 'md'].includes(props.width);
 
     this.state = {
-      isOpen: !isMobile
+      isOpen: false // !isMobile
     };
   }
 
@@ -68,8 +68,7 @@ class Dashboard extends Component {
           }}
           onClose={this.handleClose}
           open={isOpen}
-          variant={isMobile ? 'temporary' : 'permanent'}
-        >
+          variant={isMobile ? 'temporary' : 'permanent'}>
           {isOpen ? (
             <Sidebar className={classes.sidebar} />
           ) : (

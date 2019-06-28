@@ -1,7 +1,7 @@
 export default theme => ({
   topbar: {
     position: 'fixed',
-    width: '100%',
+    width: 'calc(100% - 73px)',
     top: 0,
     left: 0,
     right: 'auto',

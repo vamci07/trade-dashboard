@@ -24,6 +24,10 @@ import {
 // Material icons
 import { ArrowBack as ArrowBackIcon } from '@material-ui/icons';
 
+// Store
+import { connect } from 'react-redux';
+import { registerUser } from 'store/actions/authActions';
+
 // Shared utilities
 import validators from 'common/validators';
 
@@ -47,25 +51,19 @@ const signUp = () => {
 class SignUp extends Component {
   state = {
     values: {
-      firstName: '',
-      lastName: '',
+      name: '',
       email: '',
-      password: '',
-      policy: false
+      password: ''
     },
     touched: {
-      firstName: false,
-      lastName: false,
+      name: false,
       email: false,
-      password: false,
-      policy: null
+      password: false
     },
     errors: {
-      firstName: null,
-      lastName: null,
+      name: null,
       email: null,
-      password: null,
-      policy: null
+      password: null
     },
     isValid: false,
     isLoading: false,
@@ -108,13 +106,13 @@ class SignUp extends Component {
       this.setState({ isLoading: true });
 
       await signUp({
-        firstName: values.firstName,
-        lastName: values.lastName,
+        name: values.name,
         email: values.email,
         password: values.password
       });
-
-      history.push('/sign-in');
+      console.log(this.state);
+      this.props.registerUser(this.state.values, this.props.history);
+      //history.push('/');
     } catch (error) {
       this.setState({
         isLoading: false,
@@ -134,10 +132,7 @@ class SignUp extends Component {
       isLoading
     } = this.state;
 
-    const showFirstNameError =
-      touched.firstName && errors.firstName ? errors.firstName[0] : false;
-    const showLastNameError =
-      touched.lastName && errors.lastName ? errors.lastName[0] : false;
+    const showNameError = touched.name && errors.name ? errors.name[0] : false;
     const showEmailError =
       touched.email && errors.email ? errors.email[0] : false;
     const showPasswordError =
@@ -147,104 +142,50 @@ class SignUp extends Component {
 
     return (
       <div className={classes.root}>
-        <Grid
-          className={classes.grid}
-          container
-        >
-          <Grid
-            className={classes.quoteWrapper}
-            item
-            lg={5}
-          >
+        <Grid className={classes.grid} container>
+          <Grid className={classes.quoteWrapper} item lg={5}>
             <div className={classes.quote}>
               <div className={classes.quoteInner}>
-                <Typography
-                  className={classes.quoteText}
-                  variant="h1"
-                >
-                  Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                  they sold out High Life.
+                <Typography className={classes.quoteText} variant="h1">
+                  WHAT YOU DO TODAY IS IMPORTANT BECAUSE YOU ARE EXCHANGING A
+                  DAY OF YOUR LIFE FOR IT
                 </Typography>
-                <div className={classes.person}>
-                  <Typography
-                    className={classes.name}
-                    variant="body1"
-                  >
-                    Takamaru Ayako
-                  </Typography>
-                  <Typography
-                    className={classes.bio}
-                    variant="body2"
-                  >
-                    Manager at inVision
-                  </Typography>
-                </div>
               </div>
             </div>
           </Grid>
-          <Grid
-            className={classes.content}
-            item
-            lg={7}
-            xs={12}
-          >
+          <Grid className={classes.content} item lg={7} xs={12}>
             <div className={classes.content}>
               <div className={classes.contentHeader}>
                 <IconButton
                   className={classes.backButton}
-                  onClick={this.handleBack}
-                >
+                  onClick={this.handleBack}>
                   <ArrowBackIcon />
                 </IconButton>
               </div>
               <div className={classes.contentBody}>
                 <form className={classes.form}>
-                  <Typography
-                    className={classes.title}
-                    variant="h2"
-                  >
+                  <Typography className={classes.title} variant="h2">
                     Create new account
                   </Typography>
-                  <Typography
-                    className={classes.subtitle}
-                    variant="body1"
-                  >
-                    Use your work email to create new account... it's free.
+                  <Typography className={classes.subtitle} variant="body1">
+                    Use your email to create new account... it's free.
                   </Typography>
                   <div className={classes.fields}>
                     <TextField
                       className={classes.textField}
-                      label="First name"
-                      name="firstName"
+                      label="Name"
+                      name="name"
                       onChange={event =>
-                        this.handleFieldChange('firstName', event.target.value)
+                        this.handleFieldChange('name', event.target.value)
                       }
-                      value={values.firstName}
+                      value={values.name}
                       variant="outlined"
                     />
-                    {showFirstNameError && (
+                    {showNameError && (
                       <Typography
                         className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.firstName[0]}
-                      </Typography>
-                    )}
-                    <TextField
-                      className={classes.textField}
-                      label="Last name"
-                      onChange={event =>
-                        this.handleFieldChange('lastName', event.target.value)
-                      }
-                      value={values.lastName}
-                      variant="outlined"
-                    />
-                    {showLastNameError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.lastName[0]}
+                        variant="body2">
+                        {errors.name[0]}
                       </Typography>
                     )}
                     <TextField
@@ -260,8 +201,7 @@ class SignUp extends Component {
                     {showEmailError && (
                       <Typography
                         className={classes.fieldError}
-                        variant="body2"
-                      >
+                        variant="body2">
                         {errors.email[0]}
                       </Typography>
                     )}
@@ -278,49 +218,13 @@ class SignUp extends Component {
                     {showPasswordError && (
                       <Typography
                         className={classes.fieldError}
-                        variant="body2"
-                      >
+                        variant="body2">
                         {errors.password[0]}
-                      </Typography>
-                    )}
-                    <div className={classes.policy}>
-                      <Checkbox
-                        checked={values.policy}
-                        className={classes.policyCheckbox}
-                        color="primary"
-                        name="policy"
-                        onChange={() =>
-                          this.handleFieldChange('policy', !values.policy)
-                        }
-                      />
-                      <Typography
-                        className={classes.policyText}
-                        variant="body1"
-                      >
-                        I have read the &nbsp;
-                        <Link
-                          className={classes.policyUrl}
-                          to="#"
-                        >
-                          Terms and Conditions
-                        </Link>
-                        .
-                      </Typography>
-                    </div>
-                    {showPolicyError && (
-                      <Typography
-                        className={classes.fieldError}
-                        variant="body2"
-                      >
-                        {errors.policy[0]}
                       </Typography>
                     )}
                   </div>
                   {submitError && (
-                    <Typography
-                      className={classes.submitError}
-                      variant="body2"
-                    >
+                    <Typography className={classes.submitError} variant="body2">
                       {submitError}
                     </Typography>
                   )}
@@ -333,20 +237,13 @@ class SignUp extends Component {
                       disabled={!isValid}
                       onClick={this.handleSignUp}
                       size="large"
-                      variant="contained"
-                    >
+                      variant="contained">
                       Sign up now
                     </Button>
                   )}
-                  <Typography
-                    className={classes.signIn}
-                    variant="body1"
-                  >
+                  <Typography className={classes.signIn} variant="body1">
                     Have an account?{' '}
-                    <Link
-                      className={classes.signInUrl}
-                      to="/sign-in"
-                    >
+                    <Link className={classes.signInUrl} to="/">
                       Sign In
                     </Link>
                   </Typography>
@@ -366,7 +263,17 @@ SignUp.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default compose(
-  withRouter,
-  withStyles(styles)
-)(SignUp);
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(
+  compose(
+    withRouter,
+    withStyles(styles)
+  )(SignUp)
+);

@@ -6,7 +6,9 @@ const logger = require("morgan");
 const passport = require("passport");
 
 // Routes
-const user = require("./routes/user");
+const users = require("./routes/api/users");
+const trades = require("./routes/api/trades");
+const tasks = require("./routes/api/tasks");
 
 const API_PORT = 3001;
 
@@ -14,10 +16,10 @@ const app = express();
 
 app.use(cors());
 
-const db = require("./config/keys").mongoURI;
+const uri = "mongodb+srv://PJ:PJ123@cluster0-rpwqh.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(uri, { useNewUrlParser: true })
   .then(() => console.log("Connected to my Mongodb"))
   .catch(error =>
     console.error.bind(console, "Mongodb connection error", error)
@@ -35,7 +37,10 @@ app.use(passport.initialize());
 
 require("./config/passport")(passport);
 
-app.use("api/user", user);
+// Routes
+app.use("/api/users", users);
+app.use("/api/trades", trades);
+app.use("/api/tasks", tasks);
 
 const port = process.env.PORT || API_PORT;
 

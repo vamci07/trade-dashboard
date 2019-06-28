@@ -12,15 +12,12 @@ export default theme => ({
     }
   },
   quote: {
-    backgroundColor: theme.palette.common.neutral,
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'url(/images/sign_up_1.jpg)',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center'
+    backgroundColor: '#20bf55',
+    backgroundImage: 'linear-gradient(315deg, #20bf55 0%, #01baef 74%)'
   },
   quoteInner: {
     textAlign: 'center',

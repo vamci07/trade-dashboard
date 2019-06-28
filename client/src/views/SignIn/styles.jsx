@@ -17,10 +17,13 @@ export default theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'url(/images/sign_up_1.jpg)',
-    backgroundSize: 'cover',
+    backgroundColor: '#a4508b',
+    backgroundImage: 'linear-gradient(326deg, #a4508b 0%, #5f0a87 74%)'
+
+    /*     backgroundImage: 'url(/images/fxpig.png)',
+    backgroundSize: 'fill',
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center'
+    backgroundPosition: 'center' */
   },
   quoteInner: {
     textAlign: 'center',
