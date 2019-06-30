@@ -1,12 +1,8 @@
-// Palette
-import palette from '../palette';
-
 export default {
+  root: {
+    borderRadius: 32
+  },
   outlined: {},
-  contained: {
-    backgroundColor: palette.common.white,
-    '&:hover': {
-      backgroundColor: palette.common.neutral
-    }
-  }
+  contained: {},
+  containedPrimary: {}
 };

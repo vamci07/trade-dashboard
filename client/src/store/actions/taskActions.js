@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 import {
   CREATE_TASK,
@@ -6,12 +6,12 @@ import {
   // DELETE_TASK,
   GET_TASKS,
   TASKS_LOADING
-} from "./types";
+} from './types';
 
 // Create Task
 export const createTask = taskData => dispatch => {
   axios
-    .post("/api/tasks/create", taskData)
+    .post('/api/tasks/create', taskData)
     .then(res =>
       dispatch({
         type: CREATE_TASK,

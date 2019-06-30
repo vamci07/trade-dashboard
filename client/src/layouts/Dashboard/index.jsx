@@ -13,7 +13,7 @@ import { withStyles, withWidth } from '@material-ui/core';
 import { Drawer } from '@material-ui/core';
 
 // Custom components
-import { Sidebar, Topbar, Footer } from './components';
+import { Sidebar, Topbar } from './components';
 
 // Component styles
 import styles from './styles';
@@ -23,7 +23,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    const isMobile = ['xs', 'sm', 'md'].includes(props.width);
+    // const isMobile = ['xs', 'sm', 'md'].includes(props.width);
 
     this.state = {
       isOpen: false // !isMobile
@@ -68,19 +68,26 @@ class Dashboard extends Component {
           }}
           onClose={this.handleClose}
           open={isOpen}
-          variant={isMobile ? 'temporary' : 'permanent'}>
+          variant={isMobile ? 'temporary' : 'permanent'}
+        >
           {isOpen ? (
-            <Sidebar className={classes.sidebar} />
+            <Sidebar
+              className={classes.sidebar}
+              onToggleSidebar={this.handleToggleOpen}
+            />
           ) : (
-            <SidebarCollapsed className={classes.SidebarCollapsed} />
+            <SidebarCollapsed
+              className={classes.SidebarCollapsed}
+              onToggleSidebar={this.handleToggleOpen}
+            />
           )}
         </Drawer>
         <main
           className={classNames(classes.content, {
             [classes.contentShift]: shiftContent
-          })}>
+          })}
+        >
           {children}
-          <Footer />
         </main>
       </Fragment>
     );

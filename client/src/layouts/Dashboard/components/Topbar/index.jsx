@@ -20,8 +20,6 @@ import {
 
 // Material icons
 import {
-  Menu as MenuIcon,
-  Close as CloseIcon,
   NotificationsOutlined as NotificationsIcon,
   Input as InputIcon
 } from '@material-ui/icons';
@@ -93,13 +91,7 @@ class Topbar extends Component {
   };
 
   render() {
-    const {
-      classes,
-      className,
-      title,
-      isSidebarOpen,
-      onToggleSidebar
-    } = this.props;
+    const { classes, className, title } = this.props;
     const { notifications, notificationsCount, notificationsEl } = this.state;
 
     const rootClassName = classNames(classes.root, className);
@@ -109,16 +101,9 @@ class Topbar extends Component {
       <Fragment>
         <div className={rootClassName}>
           <Toolbar className={classes.toolbar}>
-            <IconButton
-              className={classes.menuButton}
-              onClick={onToggleSidebar}
-              variant="text"
-            >
-              {isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
-            </IconButton>
             <Typography
               className={classes.title}
-              variant="h4"
+              variant="h3"
             >
               {title}
             </Typography>

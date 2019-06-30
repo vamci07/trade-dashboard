@@ -12,17 +12,10 @@ import { Grid } from '@material-ui/core';
 // Shared layouts
 import { Dashboard as DashboardLayout } from 'layouts';
 
+import { connect } from 'react-redux';
+
 // Custom components
-import {
-  Budget,
-  Users,
-  Progress,
-  Profit,
-  SalesChart,
-  DevicesChart,
-  ProductList,
-  OrdersTable
-} from './components';
+import { Budget, Users, Progress, Profit, SalesChart } from './components';
 
 // Component styles
 const styles = theme => ({
@@ -35,6 +28,12 @@ const styles = theme => ({
 });
 
 class Dashboard extends Component {
+  componentDidMount() {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.history.push('/');
+    }
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -90,33 +89,6 @@ class Dashboard extends Component {
             >
               <SalesChart className={classes.item} />
             </Grid>
-            <Grid
-              item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <DevicesChart className={classes.item} />
-            </Grid>
-            <Grid
-              item
-              lg={4}
-              md={6}
-              xl={3}
-              xs={12}
-            >
-              <ProductList className={classes.item} />
-            </Grid>
-            <Grid
-              item
-              lg={8}
-              md={12}
-              xl={9}
-              xs={12}
-            >
-              <OrdersTable className={classes.item} />
-            </Grid>
           </Grid>
         </div>
       </DashboardLayout>
@@ -125,7 +97,16 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
+  auth: PropTypes.object,
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object
 };
 
-export default withStyles(styles)(Dashboard);
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(Dashboard));

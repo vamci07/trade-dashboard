@@ -19,8 +19,10 @@ export default theme => ({
   },
   logoImage: {
     cursor: 'pointer'
-    /* height: '48px',
-    width: '48px' */
+  },
+  logoIcon: {
+    fontSize: 48,
+    fontWeight: 700
   },
   logoDivider: {
     marginBottom: theme.spacing.unit * 2
@@ -83,5 +85,31 @@ export default theme => ({
   listDivider: {
     marginBottom: theme.spacing.unit * 2,
     marginTop: theme.spacing.unit * 2
+  },
+  footerList: {
+    bottom: 16,
+    position: 'absolute',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingRight: 16,
+    height: 64
+  },
+  footerIcon: {
+    color: theme.palette.primary.main,
+    marginLeft: '-4px',
+    marginRight: 0,
+    cursor: 'pointer',
+    height: 56,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.light,
+      border: `4px solid ${theme.palette.primary.main}`,
+      borderRadius: '50%'
+    }
+  },
+  expandIcon: {
+    fontSize: 48,
+    fontWeight: 700
   }
 });

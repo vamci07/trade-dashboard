@@ -20,15 +20,11 @@ import {
 // Material icons
 import {
   DashboardOutlined as DashboardIcon,
-  PeopleOutlined as PeopleIcon,
-  ShoppingBasketOutlined as ShoppingBasketIcon,
-  LockOpenOutlined as LockOpenIcon,
-  TextFields as TextFieldsIcon,
-  ImageOutlined as ImageIcon,
-  InfoOutlined as InfoIcon,
+  Code as CodeIcon,
+  List as ListIcon,
   AccountBoxOutlined as AccountBoxIcon,
   SettingsOutlined as SettingsIcon,
-  BusinessCenter as BusinessIcon
+  ChevronRight as ExpandIcon
 } from '@material-ui/icons';
 
 // Component styles
@@ -36,16 +32,19 @@ import styles from './styles';
 
 class SidebarCollapsed extends Component {
   render() {
-    const { classes, className } = this.props;
+    const { classes, className, onToggleSidebar } = this.props;
 
     const rootClassName = classNames(classes.root, className);
 
     return (
       <nav className={rootClassName}>
         <div className={classes.logoWrapper}>
-          <Link className={classes.logoLink} to="/">
-            <ListItemIcon className={classes.logoImage}>
-              <BusinessIcon />
+          <Link
+            className={classes.logoLink}
+            to="/"
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <CodeIcon className={classes.logoIcon} />
             </ListItemIcon>
           </Link>
         </div>
@@ -60,12 +59,16 @@ class SidebarCollapsed extends Component {
           </Link>
         </div>
         <Divider className={classes.profileDivider} />
-        <List component="div" disablePadding>
+        <List
+          component="div"
+          disablePadding
+        >
           <ListItem
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/dashboard">
+            to="/dashboard"
+          >
             <ListItemIcon className={classes.listItemIcon}>
               <DashboardIcon />
             </ListItemIcon>
@@ -74,52 +77,18 @@ class SidebarCollapsed extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/users">
+            to="/users"
+          >
             <ListItemIcon className={classes.listItemIcon}>
-              <PeopleIcon />
+              <ListIcon />
             </ListItemIcon>
           </ListItem>
           <ListItem
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/products">
-            <ListItemIcon className={classes.listItemIcon}>
-              <ShoppingBasketIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/sign-in">
-            <ListItemIcon className={classes.listItemIcon}>
-              <LockOpenIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/typography">
-            <ListItemIcon className={classes.listItemIcon}>
-              <TextFieldsIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/icons">
-            <ListItemIcon className={classes.listItemIcon}>
-              <ImageIcon />
-            </ListItemIcon>
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/account">
+            to="/account"
+          >
             <ListItemIcon className={classes.listItemIcon}>
               <AccountBoxIcon />
             </ListItemIcon>
@@ -128,23 +97,24 @@ class SidebarCollapsed extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/settings">
+            to="/settings"
+          >
             <ListItemIcon className={classes.listItemIcon}>
               <SettingsIcon />
             </ListItemIcon>
           </ListItem>
         </List>
-        <Divider className={classes.listDivider} />
-        <List component="div" disablePadding>
-          <ListItem
-            className={classes.listItem}
-            component="a"
-            href="https://devias.io/contact-us"
-            target="_blank">
-            <ListItemIcon className={classes.listItemIcon}>
-              <InfoIcon />
-            </ListItemIcon>
-          </ListItem>
+        <List
+          className={classes.footerList}
+          component="div"
+          disablePadding
+        >
+          <ListItemIcon
+            className={classes.footerIcon}
+            onClick={onToggleSidebar}
+          >
+            <ExpandIcon className={classes.expandIcon} />
+          </ListItemIcon>
         </List>
       </nav>
     );
@@ -157,11 +127,3 @@ SidebarCollapsed.propTypes = {
 };
 
 export default withStyles(styles)(SidebarCollapsed);
-
-/*
-<img
-  alt="Brainalytica logo"
-  className={classes.logoImage}
-  src="/images/logos/stex-logo.png"
-/>
-*/

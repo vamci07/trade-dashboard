@@ -1,58 +1,63 @@
-import { white, black } from '../common/colors';
+import { white, black } from '@material-ui/core/colors/common';
+import {
+  grey,
+  green,
+  teal,
+  blue,
+  orange,
+  red,
+  blueGrey
+} from '@material-ui/core/colors';
 
 export default {
+  type: 'light',
   common: {
     black,
     white,
-    neutral: '#E4E7EB',
-    muted: '#9EA0A4'
+    neutral: grey[200],
+    muted: grey[500]
   },
   primary: {
-    contrastText: white,
-    main: '#0767DB',
-    light: '#F6F9FD',
-    dark: '#0B48A0'
+    contrastText: black,
+    main: teal[500],
+    light: teal[100]
   },
   secondary: {
-    contrastText: white,
-    main: '#7d58ff',
-    light: '',
-    dark: '#37248F'
+    contrastText: black,
+    main: teal[800],
+    light: teal[100]
   },
   success: {
-    contrastText: white,
-    main: '#45B880',
-    light: '#F1FAF5',
-    dark: '#00783E'
+    contrastText: black,
+    main: green[500],
+    light: green[100]
   },
   info: {
-    contrastText: white,
-    main: '#1070CA',
-    light: '#F1FBFC',
-    dark: '#007489'
+    contrastText: black,
+    main: blue[500],
+    light: blue[100]
   },
   warning: {
-    contrastText: white,
-    main: '#FFB822',
-    light: '#FDF8F3',
-    dark: '#95591E'
+    contrastText: black,
+    main: orange[500],
+    light: orange[100]
   },
   danger: {
-    contrastText: white,
-    main: '#ED4740',
-    light: '#FEF6F6',
-    dark: '#BF0E08'
+    contrastText: black,
+    main: red[500],
+    light: red[100]
   },
   text: {
-    primary: '#12161B',
-    secondary: '#66788A',
-    disabled: '#A6B1BB'
+    primary: blueGrey[800],
+    secondary: teal[500],
+    disabled: grey[500]
   },
   background: {
-    default: '#f8fafc',
+    default: white,
     dark: '#172B4D',
-    paper: white
+    paper: white,
+    topBar: teal[500]
   },
-  border: '#DFE3E8',
-  divider: '#DFE3E8'
+  border: blueGrey[50],
+  divider: blueGrey[50]
 };

@@ -1,4 +1,4 @@
-import { GET_ERRORS } from "../actions/types";
+import { GET_ERRORS } from '../actions/types';
 
 const initialState = {
   errors: []
@@ -10,7 +10,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         errors: action.payload
-      }
+      };
     default:
       return state;
   }

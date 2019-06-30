@@ -1,9 +1,9 @@
-import palette from '../palette';
+import palette from 'theme/palette';
 
 export default {
-  root: {
-    '&:hover:not($disabled)': {
-      backgroundColor: palette.background.default
-    }
+  root: {},
+  notchedOutline: {
+    borderColor: palette.common.white,
+    borderRadius: 32
   }
 };

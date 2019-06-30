@@ -4,6 +4,8 @@ export default {
   useNextVariants: true,
   fontFamily: [
     'Lato',
+    'Monserrat',
+    'CircularStd',
     '-apple-system',
     'BlinkMacSystemFont',
     '"Segoe UI"',
@@ -17,42 +19,42 @@ export default {
   ].join(','),
   h1: {
     color: palette.text.primary,
-    fontWeight: '500',
+    fontWeight: '900',
     fontSize: '35px',
     letterSpacing: '-0.24px',
     lineHeight: '40px'
   },
   h2: {
     color: palette.text.primary,
-    fontWeight: '500',
+    fontWeight: '700',
     fontSize: '29px',
     letterSpacing: '-0.24px',
     lineHeight: '32px'
   },
   h3: {
     color: palette.text.primary,
-    fontWeight: '500',
+    fontWeight: '700',
     fontSize: '24px',
     letterSpacing: '-0.06px',
     lineHeight: '28px'
   },
   h4: {
     color: palette.text.primary,
-    fontWeight: '500',
+    fontWeight: '700',
     fontSize: '20px',
     letterSpacing: '-0.06px',
     lineHeight: '24px'
   },
   h5: {
     color: palette.text.primary,
-    fontWeight: '500',
+    fontWeight: '700',
     fontSize: '16px',
     letterSpacing: '-0.05px',
     lineHeight: '20px'
   },
   h6: {
     color: palette.text.primary,
-    fontWeight: '500',
+    fontWeight: '700',
     fontSize: '14px',
     letterSpacing: '-0.05px',
     lineHeight: '20px'

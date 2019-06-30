@@ -1,18 +1,19 @@
 export default theme => ({
   root: {
+    width: '100%',
+    height: 160,
     borderBottom: `1px solid ${theme.palette.border}`,
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: theme.palette.background.topBar,
     display: 'flex',
-    alignItems: 'center',
-    height: '64px',
-    zIndex: theme.zIndex.appBar
+    alignItems: 'flex-start'
   },
   toolbar: {
     minHeight: 'auto',
     width: '100%'
   },
   title: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing.unit,
+    color: theme.palette.primary.contrastText
   },
   menuButton: {
     marginLeft: '-4px'

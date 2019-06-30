@@ -4,7 +4,7 @@ import {
   // DELETE_TASK,
   GET_TASKS,
   TASKS_LOADING
-} from "../actions/types";
+} from '../actions/types';
 
 const initialState = {
   tasks: [],

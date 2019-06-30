@@ -1,7 +1,7 @@
 export default theme => ({
   topbar: {
     position: 'fixed',
-    width: 'calc(100% - 73px)',
+    width: 'calc(-73px + 100vw)',
     top: 0,
     left: 0,
     right: 'auto',
@@ -23,18 +23,19 @@ export default theme => ({
     width: '270px'
   },
   content: {
-    marginTop: '64px',
+    marginTop: '161px',
     marginLeft: '73px',
     backgroundColor: theme.palette.background.default,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    zIndex: theme.zIndex.appBar
   },
   contentShift: {
-    marginLeft: '270px'
+    marginLeft: '270px',
+    zIndex: theme.zIndex.appBar
   },
-
   drawerPaperCollapsed: {
     zIndex: 1200,
     width: '73px'

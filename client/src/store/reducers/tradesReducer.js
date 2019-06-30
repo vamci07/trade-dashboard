@@ -6,7 +6,7 @@ import {
   TRADE_LOADING,
   GET_TRADES,
   TRADES_LOADING
-} from "../actions/types";
+} from '../actions/types';
 
 const initialState = {
   trades: [],
@@ -36,9 +36,7 @@ export default function(state = initialState, action) {
     case DELETE_TRADE:
       return {
         ...state,
-        trades: state.trades.filter(
-          trade => trade._id !== action.payload
-        )
+        trades: state.trades.filter(trade => trade._id !== action.payload)
       };
     case GET_TRADE:
       return {
