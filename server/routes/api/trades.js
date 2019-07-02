@@ -19,11 +19,11 @@ router.get(
     await Trade.find({})
       .then(trades => {
         trades.map(trade => {
-          trade.owner.map(member => {
-            if (member.email == req.user.email) {
-              tradesArr.push(trade);
-            }
-          });
+          /* trade.owner.map(member => {
+            if (member.email == req.user.email) { */
+          tradesArr.push(trade);
+          /* }
+          }); */
         });
       })
       .catch(err => console.log(err));
@@ -64,21 +64,19 @@ router.post(
   "/create",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+    // Form validation
 
-  // Form validation
+    // const { errors, isValid } = validateJournalInput(req.body);
 
-  const { errors, isValid } = validateJournalInput(req.body);
-
-  // Check validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+    // Check validation
+    /* if (!isValid) {
+      return res.status(400).json(errors);
+    } */
 
     const OWNER = {
       id: req.user.id,
       name: req.user.name,
-      email: req.user.email,
- //     stock: req.user.stock
+      email: req.user.email
     };
 
     const NEW_TRADE = await new Trade({
@@ -95,7 +93,9 @@ router.post(
       emotionalstate: req.body.emotionalstate
     });
 
-    NEW_TRADE.save().then(trade => res.json(trade));
+    NEW_TRADE.save()
+      .then(trade => res.json(trade))
+      .catch(err => console.log(err));
   }
 );
 

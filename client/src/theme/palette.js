@@ -19,13 +19,13 @@ export default {
   },
   primary: {
     contrastText: black,
-    main: teal[500],
-    light: teal[100]
+    main: blue[500],
+    light: blue[100]
   },
   secondary: {
     contrastText: black,
-    main: teal[800],
-    light: teal[100]
+    main: blue[800],
+    light: blue[400]
   },
   success: {
     contrastText: black,
@@ -34,8 +34,8 @@ export default {
   },
   info: {
     contrastText: black,
-    main: blue[500],
-    light: blue[100]
+    main: orange[500],
+    light: orange[100]
   },
   warning: {
     contrastText: black,
@@ -49,14 +49,14 @@ export default {
   },
   text: {
     primary: blueGrey[800],
-    secondary: teal[500],
+    secondary: blue[500],
     disabled: grey[500]
   },
   background: {
     default: white,
     dark: '#172B4D',
     paper: white,
-    topBar: teal[500]
+    topBar: blue[500]
   },
   border: blueGrey[50],
   divider: blueGrey[50]

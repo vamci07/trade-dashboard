@@ -22,7 +22,7 @@ const TradeSchema = new Schema({
   startingprice: {
     type: Number,
     required: false
-  } ,
+  },
   stoploss: {
     type: Number,
     required: false
@@ -50,7 +50,7 @@ const TradeSchema = new Schema({
   owner: [
     {
       id: {
-        type: Number
+        type: String
       },
       email: {
         type: String
@@ -59,7 +59,7 @@ const TradeSchema = new Schema({
         type: String
       }
     }
-  ], 
+  ]
 });
 
 module.exports = Trade = mongoose.model("trade", TradeSchema);

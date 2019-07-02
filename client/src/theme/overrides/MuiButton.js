@@ -1,8 +1,22 @@
+import palette from 'theme/palette';
+import { common, blue } from '@material-ui/core/colors';
+
 export default {
   root: {
-    borderRadius: 32
+    backgroundColor: palette.primary.main,
+    color: common.white,
+    textTransform: 'none',
+    fontWeight: 700
   },
   outlined: {},
-  contained: {},
+  contained: {
+    backgroundColor: palette.primary.main,
+    color: common.white,
+    textTransform: 'none',
+    fontWeight: 700,
+    '&:hover, &:focus': {
+      backgroundColor: blue[700]
+    }
+  },
   containedPrimary: {}
 };

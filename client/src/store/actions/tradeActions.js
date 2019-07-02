@@ -14,11 +14,10 @@ import { GET_ERRORS } from './types';
 
 // Create trade
 export const createTrade = tradeData => dispatch => {
-  console.log("I'm in");
+  console.log(tradeData);
   axios
     .post('/api/trades/create', tradeData)
     .then(res => {
-      console.log(res.data);
       dispatch({
         type: CREATE_TRADE,
         payload: res.data
@@ -93,7 +92,7 @@ export const getTrades = () => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_TRADES,
-        payload: null
+        payload: err
       })
     );
 };
