@@ -11,6 +11,10 @@ const TradeSchema = new Schema({
     type: String,
     required: false
   },
+  stockname: {
+    type: String,
+    required: false
+  },
   action: {
     type: String,
     required: false

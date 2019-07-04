@@ -14,7 +14,6 @@ import { GET_ERRORS } from './types';
 
 // Create trade
 export const createTrade = tradeData => dispatch => {
-  console.log(tradeData);
   axios
     .post('/api/trades/create', tradeData)
     .then(res => {

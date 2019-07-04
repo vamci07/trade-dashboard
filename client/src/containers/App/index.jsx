@@ -2,6 +2,7 @@ import React from 'react';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from 'styled-components';
 import theme from 'theme';
 import { CssBaseline } from '@material-ui/core';
 import 'react-perfect-scrollbar/dist/css/styles.css';
@@ -18,6 +19,10 @@ import store from 'store';
 import { setCurrentUser, logoutUser } from 'store/actions/authActions';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from 'utils/setAuthToken';
+import { createGenerateClassName, jssPreset } from '@material-ui/styles';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { create } from 'jss';
+import Landing from 'views/Landing';
 
 const browserHistory = createBrowserHistory();
 
@@ -33,39 +38,44 @@ if (localStorage.jwtTokenTeams) {
   }
 }
 
+const styleNode = document.createComment('jss-insertion-point');
+document.head.insertBefore(styleNode, document.head.firstChild);
+
+const generateClassName = createGenerateClassName();
+
+const jss = create({
+  ...jssPreset(),
+  insertionPoint: document.getElementById('jss-insertion-point')
+});
+
 function App() {
   return (
     <Provider store={store}>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router history={browserHistory}>
-          <Route
-            component={SignIn}
-            exact
-            path="/"
-          />
-          <Route
-            component={SignUp}
-            exact
-            path="/register"
-          />
-          <Route
-            component={Dashboard}
-            exact
-            path="/dashboard"
-          />
-          <Route
-            component={UnderDevelopment}
-            exact
-            path="/under-development"
-          />
-          <Route
-            component={NotFound}
-            exact
-            path="/not-found"
-          />
-        </Router>
-      </MuiThemeProvider>
+      <JssProvider
+        generateClassName={generateClassName}
+        jss={jss}
+      >
+        <MuiThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <>
+              <CssBaseline />
+              <Router history={browserHistory}>
+                <Route
+                  component={SignIn}
+                  exact
+                  path="/"
+                />
+                <Route
+                  component={SignUp}
+                  exact
+                  path="/register"
+                />
+                <Landing />
+              </Router>
+            </>
+          </ThemeProvider>
+        </MuiThemeProvider>
+      </JssProvider>
     </Provider>
   );
 }

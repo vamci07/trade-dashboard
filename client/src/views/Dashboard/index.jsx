@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+
 import { connect } from 'react-redux';
-import { withStyles, Card, CardHeader, Fab } from '@material-ui/core';
+import { withStyles, Fab } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import { Dashboard as DashboardLayout } from 'layouts';
-import { getTrades, createTrade } from 'store/actions/tradeActions';
+import {
+  getTrades,
+  createTrade,
+  updateTrade
+} from 'store/actions/tradeActions';
 import AddTrade from './components/AddTrade';
-
+import { StyledCard, StyledCardHeader, StyledCardContent } from './style';
+import { red, green } from '@material-ui/core/colors';
+import UpdateTrade from './components/UpdateTrade';
 // Component styles
 const styles = theme => ({
   root: {
@@ -21,6 +29,8 @@ const styles = theme => ({
 function Dashboard(props) {
   const [trades, setTrades] = useState([]);
   const [addTradeOpen, setAddTradeOpen] = useState(false);
+  const [updateTradeOpen, setUpdateTradeOpen] = useState(false);
+  const [updateTradeObj, setUpdateTradeObj] = useState({});
   const [tradeObj, setTradeObj] = useState({
     stock: '',
     action: '',
@@ -40,9 +50,16 @@ function Dashboard(props) {
     ]
   });
 
+  const [stockData, setStockData] = useState([]);
+
   async function addTrade(newTrade) {
     await props.createTrade(newTrade);
     setAddTradeOpen(!addTradeOpen);
+  }
+
+  async function updateTradeFn(updateTradeObj) {
+    await props.updateTrade(updateTradeObj);
+    setUpdateTradeOpen(!updateTradeOpen);
   }
 
   async function setTradesToState(trades) {
@@ -73,53 +90,103 @@ function Dashboard(props) {
 
   useEffect(() => {
     setTradesToState(props.trades);
+    const { trades } = props;
+    let symString = '';
+    trades && trades.map(trade => (symString = symString + trade.stock + ','));
+    symString = symString.slice(0, -1);
+    let params = {};
+    params = symString && {
+      symbol: symString,
+      api_token: 'gwfW78tA71XsiBYJbEQB8CgeL88K73aGiGfbpLEwaHszuYe5KpgMNWgSIsY3'
+    };
+    axios({
+      url: 'https://api.worldtradingdata.com/api/v1/stock',
+      method: 'get',
+      params: params
+    })
+      .then(
+        res => res && res.data && res.data.data && setStockData(res.data.data)
+      )
+      .catch(err => console.log(err));
   }, [props.trades]);
 
   function openAddTradeDialog() {
     setAddTradeOpen(!addTradeOpen);
   }
 
+  function openUpdateTradeDialog(trade) {
+    setUpdateTradeObj(trade);
+    setUpdateTradeOpen(!updateTradeOpen);
+  }
+
   const { classes } = props;
   return (
-    <DashboardLayout title="Dashboard">
-      <div className={classes.root}>
-        <Grid
-          container
-          spacing={4}
-        >
-          {trades.map(trade => {
-            return (
-              <Grid
-                item
-                key={trade.id}
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Card>
-                  <CardHeader title={trade.stock} />
-                </Card>
-              </Grid>
-            );
-          })}
-        </Grid>
-        <AddTrade
-          addTrade={addTrade}
-          onClose={openAddTradeDialog}
-          open={addTradeOpen}
-          tradeObj={tradeObj}
+    <>
+      <Grid
+        container
+        spacing={4}
+      >
+        {trades.map(trade => {
+          return (
+            <Grid
+              item
+              key={trade.id}
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              {stockData.map(stock => {
+                if (stock.symbol === trade.stock) {
+                  const displayPercent = (
+                    ((stock.price - trade.startingprice) * 100) /
+                    trade.startingprice
+                  ).toFixed(2);
+                  let color = '';
+                  if (displayPercent < 0) {
+                    color = red[300];
+                  } else {
+                    color = green[300];
+                  }
+                  return (
+                    <StyledCard
+                      color={color}
+                      onClick={() => openUpdateTradeDialog(trade)}
+                    >
+                      <StyledCardHeader title={trade.stock} />
+                      <StyledCardContent>{displayPercent}%</StyledCardContent>
+                    </StyledCard>
+                  );
+                }
+              })}
+            </Grid>
+          );
+        })}
+      </Grid>
+      <AddTrade
+        addTrade={addTrade}
+        onClose={openAddTradeDialog}
+        open={addTradeOpen}
+        tradeObj={tradeObj}
+        user={props.auth.user}
+      />
+      {openUpdateTradeDialog && (
+        <UpdateTrade
+          onClose={openUpdateTradeDialog}
+          open={updateTradeOpen}
+          tradeObj={updateTradeObj}
+          updateTradeFn={updateTradeFn}
           user={props.auth.user}
         />
-        <Fab
-          onClick={openAddTradeDialog}
-          style={{ bottom: 24, right: 24, position: 'absolute' }}
-          variant="extended"
-        >
-          <AddIcon /> Add trade
-        </Fab>
-      </div>
-    </DashboardLayout>
+      )}
+      <Fab
+        onClick={openAddTradeDialog}
+        style={{ bottom: 24, right: 24, position: 'absolute' }}
+        variant="extended"
+      >
+        <AddIcon /> Add trade
+      </Fab>
+    </>
   );
 }
 
@@ -138,5 +205,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTrades, createTrade }
+  { getTrades, createTrade, updateTrade }
 )(withStyles(styles)(Dashboard));

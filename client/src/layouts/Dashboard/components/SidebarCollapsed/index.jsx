@@ -77,7 +77,7 @@ class SidebarCollapsed extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/users"
+            to="/Tasks"
           >
             <ListItemIcon className={classes.listItemIcon}>
               <ListIcon />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -11,47 +11,44 @@ import {
   FormControlLabel
 } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
-import AxiosExample from 'components/Autocomplete';
 
-function AddTrade(props) {
-  const { open } = props;
-  const [newTrade, setNewTrade] = useState({
-    stock: '',
-    stockname: '',
-    action: '',
-    stockquantity: null,
-    startingprice: null,
-    stoploss: null,
-    targetprice: null,
-    reasonfortrade: '',
-    closingprice: null,
-    reasonforexit: '',
-    emotionalstate: '',
-    owner: [
-      {
-        email: props.user.email,
-        name: props.user.name
-      }
-    ]
-  });
+function UpdateTrade(props) {
+  const { open, tradeObj } = props;
+  const [updateTradeObj, setUpdateTradeObj] = useState({});
 
-  const handleStockSelection = item => {
-    setNewTrade({
-      ...newTrade,
-      stock: item.symbol,
-      stockname: item.name
+  useEffect(() => {
+    setUpdateTradeObj({
+      ...updateTradeObj,
+      _id: tradeObj._id,
+      stock: tradeObj.stock,
+      stockName: tradeObj.stockname,
+      action: tradeObj.action,
+      stockquantity: tradeObj.stockquantity,
+      startingprice: tradeObj.startingprice,
+      stoploss: tradeObj.stoploss,
+      targetprice: tradeObj.targetprice,
+      reasonfortrade: tradeObj.reasonfortrade,
+      closingprice: tradeObj.closingprice,
+      reasonforexit: tradeObj.reasonforexit,
+      emotionalstate: tradeObj.emotionalstate,
+      owner: [
+        {
+          email: props.user.email,
+          name: props.user.name
+        }
+      ]
     });
-  };
+  }, [tradeObj]);
 
   function handleChange(event) {
-    setNewTrade({
-      ...newTrade,
+    setUpdateTradeObj({
+      ...updateTradeObj,
       [event.target.name]: event.target.value
     });
   }
 
-  function handleCreate() {
-    props.addTrade(newTrade);
+  function handleUpdate() {
+    props.updateTradeFn(updateTradeObj);
   }
 
   return (
@@ -65,11 +62,24 @@ function AddTrade(props) {
         }
       }}>
       <DialogTitle style={{ backgroundColor: blue[500] }}>
-        Add a new trade
+        Update trade
       </DialogTitle>
       <DialogContent>
         <div style={{ width: '100%', justifyContent: 'center' }}>
-          <AxiosExample handleStockSelection={handleStockSelection} />
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 24,
+              fontWeight: 600,
+              margin: '16px 8px'
+            }}
+          >
+            {updateTradeObj.stockName} - {updateTradeObj.stock}
+          </div>
         </div>
         <div style={{ width: '100%' }}>
           <RadioGroup
@@ -80,15 +90,25 @@ function AddTrade(props) {
               flexDirection: 'row',
               justifyContent: 'center'
             }}
-            value={newTrade.action}
+            value={updateTradeObj.action}
           >
             <FormControlLabel
-              control={<Radio color="primary" />}
+              control={
+                <Radio
+                  checked={updateTradeObj.action === 'buy'}
+                  color="primary"
+                />
+              }
               label="Buy"
               value="buy"
             />
             <FormControlLabel
-              control={<Radio color="primary" />}
+              control={
+                <Radio
+                  checked={updateTradeObj.action === 'sell'}
+                  color="primary"
+                />
+              }
               label="Sell"
               value="sell"
             />
@@ -98,69 +118,69 @@ function AddTrade(props) {
           label="Quantity"
           name="stockquantity"
           onChange={event => handleChange(event)}
-          value={newTrade.stockquantity}
+          value={updateTradeObj.stockquantity}
           variant="filled"
         />
         <TextField
           label="Starting Price"
           name="startingprice"
           onChange={event => handleChange(event)}
-          value={newTrade.startingprice}
+          value={updateTradeObj.startingprice}
           variant="filled"
         />
         <TextField
           label="Target Price"
           name="targetprice"
           onChange={event => handleChange(event)}
-          value={newTrade.targetprice}
+          value={updateTradeObj.targetprice}
           variant="filled"
         />
         <TextField
           label="Stoploss"
           name="stoploss"
           onChange={event => handleChange(event)}
-          value={newTrade.stoploss}
+          value={updateTradeObj.stoploss}
           variant="filled"
         />
         <TextField
           label="Reason for Trade"
           name="reasonfortrade"
           onChange={event => handleChange(event)}
-          value={newTrade.reasonfortrade}
+          value={updateTradeObj.reasonfortrade}
           variant="filled"
         />
         <TextField
           label="Closing Price"
           name="closingprice"
           onChange={event => handleChange(event)}
-          value={newTrade.closingprice}
+          value={updateTradeObj.closingprice}
           variant="filled"
         />
         <TextField
           label="Reason for Exit"
           name="reasonforexit"
           onChange={event => handleChange(event)}
-          value={newTrade.reasonforexit}
+          value={updateTradeObj.reasonforexit}
           variant="filled"
         />
         <TextField
           label="Emotional State"
           name="emotionalstate"
           onChange={event => handleChange(event)}
-          value={newTrade.emotionalstate}
+          value={updateTradeObj.emotionalstate}
           variant="filled"
         />
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={handleCreate}
+          onClick={handleUpdate}
           variant="contained"
         >
-          Create
+          Update
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default AddTrade;
+export default UpdateTrade;

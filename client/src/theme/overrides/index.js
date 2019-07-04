@@ -6,6 +6,8 @@ import MuiDialogTitle from './MuiDialogTitle';
 import MuiDialogContent from './MuiDialogContent';
 import MuiDialogActions from './MuiDialogActions';
 import MuiTextField from './MuiTextField';
+import MuiInputLabel from './MuiInputLabel';
+import MuiCardHeader from './MuiCardHeader';
 
 export default {
   MuiOutlinedInput,
@@ -15,5 +17,7 @@ export default {
   MuiDialogTitle,
   MuiDialogContent,
   MuiTextField,
-  MuiDialogActions
+  MuiDialogActions,
+  MuiInputLabel,
+  MuiCardHeader
 };

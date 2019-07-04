@@ -21,7 +21,9 @@ router.get(
         trades.map(trade => {
           /* trade.owner.map(member => {
             if (member.email == req.user.email) { */
-          tradesArr.push(trade);
+          if (!trade.closingprice) {
+            tradesArr.push(trade);
+          }
           /* }
           }); */
         });
@@ -82,6 +84,7 @@ router.post(
     const NEW_TRADE = await new Trade({
       owner: OWNER,
       stock: req.body.stock,
+      stockname: req.body.stockname,
       action: req.body.action,
       stockquantity: req.body.stockquantity,
       startingprice: req.body.startingprice,
@@ -120,7 +123,7 @@ router.patch(
     tradeFields.emotionalstate = req.body.emotionalstate;
 
     Trade.findOneAndUpdate(
-      { _id: req.body.id },
+      { _id: req.body._id },
       { $set: tradeFields },
       { new: true }
     )
