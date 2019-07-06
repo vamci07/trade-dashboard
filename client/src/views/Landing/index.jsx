@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { Dashboard as DashboardLayout } from 'layouts';
 import Dashboard from 'views/Dashboard';
+import History from 'views/History';
 import UnderDevelopment from 'views/UnderDevelopment';
 import NotFound from 'views/NotFound';
 import { withStyles } from '@material-ui/core';
@@ -25,6 +26,11 @@ function Landing(props) {
           component={Dashboard}
           exact
           path="/dashboard"
+        />
+        <Route
+          component={History}
+          exact
+          path="/History"
         />
         <Route
           component={UnderDevelopment}

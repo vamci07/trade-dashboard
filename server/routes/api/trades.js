@@ -10,22 +10,31 @@ const validateTradeInput = require("../../validation/trade");
 // @desc Get all trades for a specific user
 // @access Private
 router.get(
-  "/",
+  "/:action",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     let tradesArr = [];
+    let action = req.params.action;
 
     // Member trades
     await Trade.find({})
       .then(trades => {
         trades.map(trade => {
-          /* trade.owner.map(member => {
-            if (member.email == req.user.email) { */
-          if (!trade.closingprice) {
-            tradesArr.push(trade);
-          }
-          /* }
-          }); */
+           trade.owner.map(member => {
+            if (member.email == req.user.email) {
+              console.log(action);
+              if(action == 'OPEN') {
+                console.log('Get OPEN Trades');
+                if (!trade.closingprice) {
+                    tradesArr.push(trade);
+                  }
+                }
+              else {
+                console.log('Get ALL Trades');
+                tradesArr.push(trade);
+              }
+            }
+          }); 
         });
       })
       .catch(err => console.log(err));
@@ -54,7 +63,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     let id = req.params.id;
-
+    console.log('I am in get trades by ID');
     Trade.findById(id).then(trade => res.json(trade));
   }
 );

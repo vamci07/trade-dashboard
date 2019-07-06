@@ -74,7 +74,8 @@ function Dashboard(props) {
     if (!props.auth.isAuthenticated) {
       props.history.push('/');
     } else {
-      props.getTrades();
+      console.log('getTrades OPEN');
+      props.getTrades('OPEN');
       setTradesToState(props.trades);
       setTradeObjToState({
         ...tradeObj,
@@ -92,22 +93,24 @@ function Dashboard(props) {
     setTradesToState(props.trades);
     const { trades } = props;
     let symString = '';
-    trades && trades.map(trade => (symString = symString + trade.stock + ','));
-    symString = symString.slice(0, -1);
-    let params = {};
-    params = symString && {
-      symbol: symString,
-      api_token: 'gwfW78tA71XsiBYJbEQB8CgeL88K73aGiGfbpLEwaHszuYe5KpgMNWgSIsY3'
-    };
-    axios({
-      url: 'https://api.worldtradingdata.com/api/v1/stock',
-      method: 'get',
-      params: params
-    })
-      .then(
-        res => res && res.data && res.data.data && setStockData(res.data.data)
-      )
-      .catch(err => console.log(err));
+    if(Object.keys(trades).length > 0) {
+      trades && trades.map(trade => (symString = symString + trade.stock + ','));
+      symString = symString.slice(0, -1);
+      let params = {};
+      params = symString && {
+        symbol: symString,
+        api_token: 'sNL6zdO10egtQOUQMk4wlEvrMPJpYxZmQLZS2OoKEO7seH701ZtuwdLt8set'
+      };
+      axios({
+        url: 'https://api.worldtradingdata.com/api/v1/stock',
+        method: 'get',
+        params: params
+      })
+        .then(
+          res => res && res.data && res.data.data && setStockData(res.data.data)
+        )
+        .catch(err => console.log(err));
+    }
   }, [props.trades]);
 
   function openAddTradeDialog() {

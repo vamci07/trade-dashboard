@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logoutUser } from "store/actions/authActions";
 
 // Externals
 import classNames from 'classnames';
@@ -73,11 +75,19 @@ class Topbar extends Component {
 
   handleSignOut = () => {
     const { history } = this.props;
-
+    console.log(history);
     localStorage.setItem('isAuthenticated', false);
+    this.props.logoutUser();
     history.push('/');
   };
-
+/*
+  onLogoutClick = e => {
+    const { history } = this.props;
+    e.preventDefault();
+    this.props.logoutUser();
+    history.push('/');
+  };
+*/
   handleShowNotifications = event => {
     this.setState({
       notificationsEl: event.currentTarget
@@ -163,7 +173,22 @@ Topbar.defaultProps = {
   onToggleSidebar: () => {}
 };
 
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+/*
 export default compose(
   withRouter,
   withStyles(styles)
 )(Topbar);
+*/
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(
+  compose(
+    withRouter,
+    withStyles(styles)
+  )(Topbar)
+);

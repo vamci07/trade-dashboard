@@ -98,14 +98,14 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/Tasks"
+            to="/History"
           >
             <ListItemIcon className={classes.listItemIcon}>
               <ListIcon />
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Tasks"
+              primary="History"
             />
           </ListItem>
           <ListItem

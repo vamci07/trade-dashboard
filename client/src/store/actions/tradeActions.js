@@ -78,10 +78,10 @@ export const getTrade = id => dispatch => {
 };
 
 // Get all trades for specific user
-export const getTrades = () => dispatch => {
+export const getTrades = action => dispatch => {
   dispatch(setTradesLoading());
   axios
-    .get('/api/trades')
+    .get(`/api/trades/${action}`)
     .then(res =>
       dispatch({
         type: GET_TRADES,

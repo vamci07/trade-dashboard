@@ -1,124 +1,61 @@
 export default theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    height: '100vh'
+    height: '100vh',
+    width: '100vw'
   },
-  grid: {
+  content: {
     height: '100%'
   },
-  quoteWrapper: {
-    [theme.breakpoints.down('md')]: {
-      display: 'none'
-    }
-  },
-  quote: {
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#20bf55',
-    backgroundImage: 'linear-gradient(315deg, #20bf55 0%, #01baef 74%)'
-  },
-  quoteInner: {
-    textAlign: 'center',
-    flexBasis: '600px'
-  },
-  quoteText: {
-    color: theme.palette.common.white,
-    fontWeight: 300
-  },
-  name: {
-    marginTop: theme.spacing.unit * 3,
-    color: theme.palette.common.white
-  },
-  bio: {
-    color: theme.palette.common.white
-  },
-  contentWrapper: {},
-  content: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  contentHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingTop: theme.spacing.unit * 5,
-    paddingBototm: theme.spacing.unit * 2,
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
-  },
-  backButton: {},
-  logoImage: {
-    marginLeft: theme.spacing.unit * 4
-  },
-  contentBody: {
-    flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'center'
-    }
-  },
   form: {
-    paddingLeft: '100px',
-    paddingRight: '100px',
-    paddingBottom: '125px',
-    flexBasis: '700px',
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing.unit * 2,
-      paddingRight: theme.spacing.unit * 2
-    }
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
-    marginTop: theme.spacing.unit * 3
-  },
-  subtitle: {
     color: theme.palette.text.secondary,
-    marginTop: theme.spacing.unit * 0.5
+    marginBottom: theme.spacing(8)
   },
   fields: {
-    marginTop: theme.spacing.unit * 5
+    width: 512,
+    padding: 16,
+    marginTop: theme.spacing(2)
+  },
+  field: {
+    height: 96
   },
   textField: {
     width: '100%',
     '& + & ': {
-      marginTop: theme.spacing.unit * 2
+      marginTop: theme.spacing(2)
     }
   },
-  policy: {
+  actions: {
+    width: 240,
+    padding: 8,
     display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center'
-  },
-  policyCheckbox: {
-    marginLeft: '-14px'
-  },
-  policyText: {
-    display: 'inline',
-    color: theme.palette.text.secondary
-  },
-  policyUrl: {
-    color: theme.palette.text.primary,
-    '&:hover': {
-      cursor: 'pointer',
-      color: theme.palette.primary.main
-    }
   },
   progress: {
     display: 'block',
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     marginLeft: 'auto',
     marginRight: 'auto'
   },
   signUpButton: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     width: '100%'
   },
-  signIn: {
-    marginTop: theme.spacing.unit * 2,
+  signUp: {
+    marginTop: theme.spacing(2),
     color: theme.palette.text.secondary
   },
-  signInUrl: {
+  signUpUrl: {
     color: theme.palette.primary.main,
     fontWeight: 'bold',
     '&:hover': {
@@ -127,13 +64,13 @@ export default theme => ({
   },
   fieldError: {
     color: theme.palette.danger.main,
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(1)
   },
   submitError: {
     color: theme.palette.danger.main,
     alignText: 'center',
-    marginBottom: theme.spacing.unit,
-    marginTop: theme.spacing.unit * 2
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(2)
   }
 });
