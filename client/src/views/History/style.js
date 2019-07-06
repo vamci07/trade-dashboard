@@ -1,44 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
+import { TableCell, TableRow } from '@material-ui/core';
 
-export const StyledCard = styled(({ ...props }) => (
-  <Card
+export const StyledTableCell = styled(({ ...props }) => (
+  <TableCell
     classes={{ root: 'root' }}
     {...props}
   />
 ))`
   &.root {
-    background-color: ${props => props.color};
-    cursor: pointer;
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+  },
+  &.body{
+    fontSize: 14,
   }
 `;
 
-export const StyledCardHeader = styled(({ ...props }) => (
-  <CardHeader
+export const StyledTableRow = styled(({ ...props }) => (
+  <TableRow
     classes={{ root: 'root' }}
     {...props}
   />
 ))`
   &.root {
-    div {
-      span {
-        font-weight: 700;
-        font-size: 24px;
-      }
-    }
-  }
-`;
-
-export const StyledCardContent = styled(({ ...props }) => (
-  <CardContent
-    classes={{ root: 'root' }}
-    {...props}
-  />
-))`
-  &.root {
-    color: #fff;
-    font-weight: 500;
-    font-size: 14px;
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
   }
 `;

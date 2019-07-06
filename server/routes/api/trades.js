@@ -22,8 +22,8 @@ router.get(
         trades.map(trade => {
            trade.owner.map(member => {
             if (member.email == req.user.email) {
-              console.log(action);
-              if(action == 'OPEN') {
+              tradesArr.push(trade);
+/*              if(action == 'OPEN') {
                 console.log('Get OPEN Trades');
                 if (!trade.closingprice) {
                     tradesArr.push(trade);
@@ -32,7 +32,8 @@ router.get(
               else {
                 console.log('Get ALL Trades');
                 tradesArr.push(trade);
-              }
+                console.log(tradesArr);
+              } */
             }
           }); 
         });

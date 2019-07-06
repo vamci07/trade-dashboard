@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableFooter from '@material-ui/core/TableFooter';
@@ -25,24 +26,6 @@ import { red, green } from '@material-ui/core/colors';
 
 function History(props) {
   const [trades, setTrades] = useState([]);
-  const [tradeObj, setTradeObj] = useState({
-    stock: '',
-    action: '',
-    stockquantity: 0,
-    startingprice: 0,
-    stoploss: 0,
-    targetprice: 0,
-    reasonfortrade: '',
-    closingprice: 0,
-    reasonforexit: '',
-    emotionalstate: '',
-    owner: [
-      {
-        email: '',
-        name: ''
-      }
-    ]
-  });
 
   /*
   // Component styles
@@ -62,53 +45,24 @@ const styles = theme => ({
     await setTrades(trades);
   }
 
-  async function setTradeObjToState(trade) {
-    setTradeObj(trade);
-  }
 
   useEffect(() => {
     if (!props.auth.isAuthenticated) {
       props.history.push('/');
     } else {
-      console.log('getTrades ALL');
-      props.getTrades('ALL');
+//      props.getTrades('ALL');
       setTradesToState(props.trades);
-      setTradeObjToState({
-        ...tradeObj,
-        owner: [
-          {
-            email: props.auth.user.email,
-            name: props.auth.user.name
-          }
-        ]
-      });
     }
   }, []);
 
   const useStyles1 = makeStyles(theme => ({
     root: {
       flexShrink: 0,
-      color: theme.palette.text.secondary,
+      color: theme.palette.text.primary,
+
       marginLeft: theme.spacing(2.5),
     },
   }));
-
-
-  const rows = [
-    createData('Cupcake', 305, 3.7),
-    createData('Donut', 452, 25.0),
-    createData('Eclair', 262, 16.0),
-    createData('Frozen yoghurt', 159, 6.0),
-    createData('Gingerbread', 356, 16.0),
-    createData('Honeycomb', 408, 3.2),
-    createData('Ice cream sandwich', 237, 9.0),
-    createData('Jelly Bean', 375, 0.0),
-    createData('KitKat', 518, 26.0),
-    createData('Lollipop', 392, 0.2),
-    createData('Marshmallow', 318, 0),
-    createData('Nougat', 360, 19.0),
-    createData('Oreo', 437, 18.0),
-  ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
   const useStyles2 = makeStyles(theme => ({
     root: {
@@ -182,11 +136,6 @@ const styles = theme => ({
     rowsPerPage: PropTypes.number.isRequired,
   };
 
-
-  function createData(name, calories, fat) {
-    return { name, calories, fat };
-  }
-
 //  function CustomPaginationActionsTable() {
     const classes = useStyles2();
     const [page, setPage] = React.useState(0);
@@ -207,16 +156,44 @@ const styles = theme => ({
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
-            <TableBody>
-              {trades.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(trade => (
-                <TableRow key={trade.stock}>
-                  <TableCell component="th" scope="row">
-                    {trade.stock}
-                  </TableCell>
-                  <TableCell align="right">{trade.startingprice}</TableCell>
-                  <TableCell align="right">{trade.closingprice}</TableCell>
+            <TableHead>
+                <TableRow>
+                  <TableCell align="right">Stock</TableCell>
+                  <TableCell align="right">Name</TableCell>
+                  <TableCell align="right">Action</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="right">Starting Price</TableCell>
+                  <TableCell align="right">Stoploss</TableCell>
+                  <TableCell align="right">Target Price</TableCell>
+                  <TableCell align="right">Closing Price</TableCell>
+                  <TableCell align="right">Gain / Loss</TableCell>
+                  <TableCell align="right">Emotions</TableCell>
                 </TableRow>
-              ))}
+            </TableHead>
+            <TableBody>
+              {trades.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(trade => {
+                let gain;
+                if(trade.closingprice) {
+                  gain = ((trade.closingprice - trade.startingprice) * trade.stockquantity).toFixed(2);
+                }
+                else {
+                  gain = '';
+                }
+                return (
+                <TableRow key={trade.stock}>
+                  <TableCell align="right">{trade.stock}</TableCell>
+                  <TableCell align="right">{trade.stockname}</TableCell>
+                  <TableCell align="right">{trade.action}</TableCell>
+                  <TableCell align="right">{trade.stockquantity}</TableCell>
+                  <TableCell align="right">{trade.startingprice}</TableCell>
+                  <TableCell align="right">{trade.stoploss}</TableCell>
+                  <TableCell align="right">{trade.targetprice}</TableCell>
+                  <TableCell align="right">{trade.closingprice}</TableCell>
+                  <TableCell align="right">{gain}</TableCell>
+                  <TableCell align="right">{trade.emotionalstate}</TableCell>
+                </TableRow>
+                );
+              })}
 
               {emptyRows > 0 && (
                 <TableRow style={{ height: 48 * emptyRows }}>
@@ -247,9 +224,6 @@ const styles = theme => ({
       </Paper>
     );
  // }
-
-
-
 
 }
 

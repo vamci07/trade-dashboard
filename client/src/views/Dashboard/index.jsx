@@ -74,7 +74,6 @@ function Dashboard(props) {
     if (!props.auth.isAuthenticated) {
       props.history.push('/');
     } else {
-      console.log('getTrades OPEN');
       props.getTrades('OPEN');
       setTradesToState(props.trades);
       setTradeObjToState({
@@ -94,22 +93,28 @@ function Dashboard(props) {
     const { trades } = props;
     let symString = '';
     if(Object.keys(trades).length > 0) {
-      trades && trades.map(trade => (symString = symString + trade.stock + ','));
-      symString = symString.slice(0, -1);
-      let params = {};
-      params = symString && {
-        symbol: symString,
-        api_token: 'sNL6zdO10egtQOUQMk4wlEvrMPJpYxZmQLZS2OoKEO7seH701ZtuwdLt8set'
-      };
-      axios({
-        url: 'https://api.worldtradingdata.com/api/v1/stock',
-        method: 'get',
-        params: params
-      })
-        .then(
-          res => res && res.data && res.data.data && setStockData(res.data.data)
-        )
-        .catch(err => console.log(err));
+      trades && trades.map(trade => {
+          if(!trade.closingprice) {
+            symString = symString + trade.stock + ',';
+          }
+        });
+      if(symString.length > 0) {
+        symString = symString.slice(0, -1);
+        let params = {};
+        params = symString && {
+          symbol: symString,
+          api_token: 'sNL6zdO10egtQOUQMk4wlEvrMPJpYxZmQLZS2OoKEO7seH701ZtuwdLt8set'
+        };
+        axios({
+          url: 'https://api.worldtradingdata.com/api/v1/stock',
+          method: 'get',
+          params: params
+        })
+          .then(
+            res => res && res.data && res.data.data && setStockData(res.data.data)
+          )
+          .catch(err => console.log(err));
+      }
     }
   }, [props.trades]);
 
@@ -130,40 +135,42 @@ function Dashboard(props) {
         spacing={4}
       >
         {trades.map(trade => {
-          return (
-            <Grid
-              item
-              key={trade.id}
-              lg={3}
-              sm={6}
-              xl={3}
-              xs={12}
-            >
-              {stockData.map(stock => {
-                if (stock.symbol === trade.stock) {
-                  const displayPercent = (
-                    ((stock.price - trade.startingprice) * 100) /
-                    trade.startingprice
-                  ).toFixed(2);
-                  let color = '';
-                  if (displayPercent < 0) {
-                    color = red[300];
-                  } else {
-                    color = green[300];
+          if(!trade.closingprice) {
+            return (
+              <Grid
+                item
+                key={trade.id}
+                lg={3}
+                sm={6}
+                xl={3}
+                xs={12}
+              >
+                {stockData.map(stock => {
+                  if (stock.symbol === trade.stock) {
+                    const displayPercent = (
+                      ((stock.price - trade.startingprice) * 100) /
+                      trade.startingprice
+                    ).toFixed(2);
+                    let color = '';
+                    if (displayPercent < 0) {
+                      color = red[300];
+                    } else {
+                      color = green[300];
+                    }
+                    return (
+                      <StyledCard
+                        color={color}
+                        onClick={() => openUpdateTradeDialog(trade)}
+                      >
+                        <StyledCardHeader title={trade.stock} />
+                        <StyledCardContent>{displayPercent}%</StyledCardContent>
+                      </StyledCard>
+                    );
                   }
-                  return (
-                    <StyledCard
-                      color={color}
-                      onClick={() => openUpdateTradeDialog(trade)}
-                    >
-                      <StyledCardHeader title={trade.stock} />
-                      <StyledCardContent>{displayPercent}%</StyledCardContent>
-                    </StyledCard>
-                  );
-                }
-              })}
-            </Grid>
-          );
+                })}
+              </Grid>
+            );
+          }
         })}
       </Grid>
       <AddTrade
