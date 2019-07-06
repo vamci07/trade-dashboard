@@ -23,6 +23,7 @@ import {
   Code as CodeIcon,
   List as ListIcon,
   AccountBoxOutlined as AccountBoxIcon,
+  TrendingUpOutlined as TrendingUpIcon,
   SettingsOutlined as SettingsIcon,
   ChevronRight as ExpandIcon
 } from '@material-ui/icons';
@@ -87,10 +88,10 @@ class SidebarCollapsed extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/account"
+            to="/Analytics"
           >
             <ListItemIcon className={classes.listItemIcon}>
-              <AccountBoxIcon />
+              <TrendingUpIcon />
             </ListItemIcon>
           </ListItem>
           <ListItem

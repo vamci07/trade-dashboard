@@ -27,33 +27,22 @@ import { red, green } from '@material-ui/core/colors';
 function History(props) {
   const [trades, setTrades] = useState([]);
 
-  /*
-  // Component styles
-const styles = theme => ({
-  root: {
-    padding: theme.spacing.unit * 4
-  },
-  item: {
-    height: '100%'
-  }
-});*/
-
-   // const [stockData, setStockData] = useState([]);
-  
-    
-   async function setTradesToState(trades) {
-    await setTrades(trades);
-  }
 
 
   useEffect(() => {
     if (!props.auth.isAuthenticated) {
       props.history.push('/');
     } else {
-//      props.getTrades('ALL');
+      props.getTrades('ALL');
       setTradesToState(props.trades);
     }
   }, []);
+    
+ async function setTradesToState(trades) {
+    await setTrades(trades);
+  }
+
+
 
   const useStyles1 = makeStyles(theme => ({
     root: {
@@ -141,7 +130,7 @@ const styles = theme => ({
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, trades.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.trades.length - page * rowsPerPage);
 
     function handleChangePage(event, newPage) {
       setPage(newPage);
@@ -171,7 +160,7 @@ const styles = theme => ({
                 </TableRow>
             </TableHead>
             <TableBody>
-              {trades.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(trade => {
+              {props.trades.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(trade => {
                 let gain;
                 if(trade.closingprice) {
                   gain = ((trade.closingprice - trade.startingprice) * trade.stockquantity).toFixed(2);
@@ -206,7 +195,7 @@ const styles = theme => ({
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   colSpan={3}
-                  count={trades.length}
+                  count={props.trades.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{

@@ -25,6 +25,7 @@ import {
   DashboardOutlined as DashboardIcon,
   List as ListIcon,
   AccountBoxOutlined as AccountBoxIcon,
+  TrendingUpOutlined as TrendingUpIcon,
   SettingsOutlined as SettingsIcon,
   ChevronLeft as CollapseIcon
 } from '@material-ui/icons';
@@ -92,7 +93,7 @@ class Sidebar extends Component {
             <ListItemText
               classes={{ primary: classes.listItemText }}
               primary="Dashboard"
-            />
+            /> 
           </ListItem>
           <ListItem
             activeClassName={classes.activeListItem}
@@ -112,14 +113,14 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/account"
+            to="/Analytics"
           >
             <ListItemIcon className={classes.listItemIcon}>
-              <AccountBoxIcon />
+              <TrendingUpIcon />
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Account"
+              primary="Analytics"
             />
           </ListItem>
           <ListItem
