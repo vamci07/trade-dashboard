@@ -63,6 +63,14 @@ class DevicesChart extends Component {
   
   render() {
     const { classes, className, ...rest } = this.props;
+    var style1 = {
+      width: '750px',
+      float: 'left'
+    }
+    var style2 = {
+      width: '700px',
+      float: 'auto'
+    }
 
     const rootClassName = classNames(classes.root, className);
     let tradeData = [];
@@ -73,10 +81,20 @@ class DevicesChart extends Component {
     this.props.trades.map(trade => {
       if(trade.closingprice) {
         if(trade.closingprice > trade.startingprice) {
-          totalWins = totalWins + 1;
+          if(trade.action.toLowerCase() == 'buy'){
+            totalWins = totalWins + 1;
+          }
+          else {
+            totalLost = totalLost + 1;
+          }
         } 
         else {
-          totalLost = totalLost + 1;
+          if(trade.action.toLowerCase() == 'buy'){
+            totalLost = totalLost + 1;
+          }
+          else {
+            totalWins = totalWins + 1;            
+          }
         }
       }
     });
@@ -109,7 +127,8 @@ class DevicesChart extends Component {
             </IconButton>
           </PortletToolbar>
         </PortletHeader>
-        <PortletContent>
+        <div>
+        <PortletContent style={style1}>
           <div className={classes.chartWrapper}>
             <Doughnut
               data={data}
@@ -149,6 +168,47 @@ class DevicesChart extends Component {
             </div>
           </div>
         </PortletContent>
+        <PortletContent style={style1}>
+          <div className={classes.chartWrapper}>
+            <Doughnut
+              data={data}
+              options={options}
+            />
+          </div>
+          <div className={classes.stats}>
+            <div className={classes.device}>
+              <ThumbUpIcon className={classes.deviceIcon} />
+              <Typography variant="body1">{data.labels[0]}</Typography>
+              <Typography
+                style={{ color: palette.primary.main }}
+                variant="h2"
+              >
+                {data.datasets[0].data[0]}%
+              </Typography>
+            </div>
+            <div className={classes.device}>
+              <ThumbDownIcon className={classes.deviceIcon} />
+              <Typography variant="body1">{data.labels[1]}</Typography>
+              <Typography
+                style={{ color: palette.danger.main }}
+                variant="h2"
+              >
+                {data.datasets[0].data[1]}%
+              </Typography>
+            </div>
+            <div className={classes.device}>
+              <ThumbUpDownIcon className={classes.deviceIcon} />
+              <Typography variant="body1">{data.labels[2]}</Typography>
+              <Typography
+                style={{ color: palette.warning.main }}
+                variant="h2"
+              >
+                {data.datasets[0].data[2]}%
+              </Typography>
+            </div>
+          </div>
+        </PortletContent>
+        </div>
       </Portlet>
     );
   }

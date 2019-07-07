@@ -33,7 +33,7 @@ function History(props) {
     if (!props.auth.isAuthenticated) {
       props.history.push('/');
     } else {
-      props.getTrades('ALL');
+//      props.getTrades('ALL');
       setTradesToState(props.trades);
     }
   }, []);
@@ -163,7 +163,12 @@ function History(props) {
               {props.trades.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(trade => {
                 let gain;
                 if(trade.closingprice) {
-                  gain = ((trade.closingprice - trade.startingprice) * trade.stockquantity).toFixed(2);
+                  if(trade.action.toLowerCase() == 'buy') {
+                    gain = ((trade.closingprice - trade.startingprice) * trade.stockquantity).toFixed(2);
+                  }
+                  else {
+                    gain = ((trade.startingprice - trade.closingprice) * trade.stockquantity).toFixed(2);
+                  }
                 }
                 else {
                   gain = '';
