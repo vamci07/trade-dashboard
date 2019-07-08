@@ -42,6 +42,9 @@ function Dashboard(props) {
     closingprice: 0,
     reasonforexit: '',
     emotionalstate: '',
+    outcome: '',
+    gain: '',
+    followedplan: '',
     owner: [
       {
         email: '',

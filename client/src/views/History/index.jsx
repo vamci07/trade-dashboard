@@ -161,18 +161,6 @@ function History(props) {
             </TableHead>
             <TableBody>
               {props.trades.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(trade => {
-                let gain;
-                if(trade.closingprice) {
-                  if(trade.action.toLowerCase() == 'buy') {
-                    gain = ((trade.closingprice - trade.startingprice) * trade.stockquantity).toFixed(2);
-                  }
-                  else {
-                    gain = ((trade.startingprice - trade.closingprice) * trade.stockquantity).toFixed(2);
-                  }
-                }
-                else {
-                  gain = '';
-                }
                 return (
                 <TableRow key={trade.stock}>
                   <TableCell align="right">{trade.stock}</TableCell>
@@ -183,7 +171,7 @@ function History(props) {
                   <TableCell align="right">{trade.stoploss}</TableCell>
                   <TableCell align="right">{trade.targetprice}</TableCell>
                   <TableCell align="right">{trade.closingprice}</TableCell>
-                  <TableCell align="right">{gain}</TableCell>
+                  <TableCell align="right">{trade.gain}</TableCell>
                   <TableCell align="right">{trade.emotionalstate}</TableCell>
                 </TableRow>
                 );

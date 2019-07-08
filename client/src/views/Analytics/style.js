@@ -1,10 +1,11 @@
 export default theme => ({
-  root: {},
+  root: {
+  },
   refreshButton: {
     margin: -theme.spacing.unit * 2
   },
   chartWrapper: {
-    position: 'relative',
+  //  position: 'relative',
     height: '300px'
   },
   stats: {

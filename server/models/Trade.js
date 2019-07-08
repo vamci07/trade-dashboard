@@ -51,6 +51,18 @@ const TradeSchema = new Schema({
     type: String,
     required: false
   },
+  outcome: {
+    type: String,
+    required: false
+  },
+  gain: {
+    type: String,
+    required: false
+  },
+  followedplan: {
+    type: String,
+    required: false
+  },
   owner: [
     {
       id: {

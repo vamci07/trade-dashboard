@@ -19,6 +19,40 @@ export let data = {
   labels: ['Desktop', 'Tablet', 'Mobile']
 };
 
+export let WinDrillDown = {
+  datasets: [
+    {
+      data: [63, 15, 22],
+      backgroundColor: [
+        palette.primary.main,
+        palette.warning.main,
+        palette.danger.main
+      ],
+      borderWidth: 8,
+      borderColor: palette.common.white,
+      hoverBorderColor: palette.common.white
+    }
+  ],
+  labels: ['Desktop', 'Tablet', 'Mobile']
+};
+
+export let LossDrillDown = {
+  datasets: [
+    {
+      data: [63, 15, 22],
+      backgroundColor: [
+        palette.primary.main,
+        palette.warning.main,
+        palette.danger.main
+      ],
+      borderWidth: 8,
+      borderColor: palette.common.white,
+      hoverBorderColor: palette.common.white
+    }
+  ],
+  labels: ['Desktop', 'Tablet', 'Mobile']
+};
+
 // Chart options
 export const options = {
   legend: {
@@ -27,7 +61,7 @@ export const options = {
   responsive: true,
   maintainAspectRatio: false,
   animation: false,
-  cutoutPercentage: 80,
+  cutoutPercentage: 60,
   layout: { padding: 0 },
   tooltips: {
     enabled: true,

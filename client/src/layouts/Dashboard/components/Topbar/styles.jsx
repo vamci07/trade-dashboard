@@ -1,7 +1,9 @@
+import { Z_FIXED } from "zlib";
+
 export default theme => ({
   root: {
     width: '100%',
-    height: 160,
+    height: 60,
     borderBottom: `1px solid ${theme.palette.border}`,
     backgroundColor: theme.palette.background.topBar,
     display: 'flex',

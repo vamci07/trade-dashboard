@@ -103,7 +103,10 @@ router.post(
       reasonfortrade: req.body.reasonfortrade,
       closingprice: req.body.closingprice,
       reasonforexit: req.body.reasonforexit,
-      emotionalstate: req.body.emotionalstate
+      emotionalstate: req.body.emotionalstate,
+      outcome: req.body.outcome,
+      gain: req.body.gain,
+      followedplan: req.body.followedplan
     });
 
     NEW_TRADE.save()
@@ -131,6 +134,9 @@ router.patch(
     tradeFields.closingprice = req.body.closingprice;
     tradeFields.reasonforexit = req.body.reasonforexit;
     tradeFields.emotionalstate = req.body.emotionalstate;
+    tradeFields.outcome = req.body.outcome;
+    tradeFields.gain = req.body.gain;
+    tradeFields.followedplan = req.body.followedplan;
 
     Trade.findOneAndUpdate(
       { _id: req.body._id },

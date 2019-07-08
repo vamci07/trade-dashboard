@@ -31,6 +31,9 @@ function UpdateTrade(props) {
       closingprice: tradeObj.closingprice,
       reasonforexit: tradeObj.reasonforexit,
       emotionalstate: tradeObj.emotionalstate,
+      outcome: tradeObj.outcome,
+      gain: tradeObj.gain,
+      followedplan: tradeObj.followedplan,
       owner: [
         {
           email: props.user.email,
@@ -47,7 +50,50 @@ function UpdateTrade(props) {
     });
   }
 
+  function evaluateOutcome() {
+  
+    // calculate gain
+      if(updateTradeObj.closingprice) {
+        if(updateTradeObj.action.toLowerCase() == 'buy') {
+          updateTradeObj.gain = ((updateTradeObj.closingprice - updateTradeObj.startingprice) * updateTradeObj.stockquantity).toFixed(2);
+
+          if(updateTradeObj.closingprice > updateTradeObj.startingprice) {
+            updateTradeObj.outcome = 'win';
+          }
+          else {
+            updateTradeObj.outcome = 'loss';
+          }
+
+          const algoPercent = 0.10;
+          if ( (updateTradeObj.closingprice > updateTradeObj.targetprice*(1 - algoPercent) ) &&
+              (updateTradeObj.closingprice < updateTradeObj.targetprice*(1 + algoPercent) ) ) {
+                updateTradeObj.followedplan = 'Y';
+              } else updateTradeObj.followedplan = 'N';
+        }
+        else {
+          updateTradeObj.gain = ((updateTradeObj.startingprice - updateTradeObj.closingprice) * updateTradeObj.stockquantity).toFixed(2);
+          if(updateTradeObj.closingprice < updateTradeObj.startingprice) {
+            updateTradeObj.outcome = 'win';
+          }
+          else {
+            updateTradeObj.outcome = 'loss';
+          }
+
+          const algoPercent = 0.10;
+          if ( (updateTradeObj.closingprice > updateTradeObj.targetprice*(1 - algoPercent) ) &&
+              (updateTradeObj.closingprice < updateTradeObj.targetprice*(1 + algoPercent) ) ) {
+                updateTradeObj.followedplan = 'Y';
+              } else updateTradeObj.followedplan = 'N';
+        }
+      }
+      else {
+        updateTradeObj.gain = '';
+        updateTradeObj.outcome = '';
+      }
+    }
+
   function handleUpdate() {
+    evaluateOutcome();
     props.updateTradeFn(updateTradeObj);
   }
 

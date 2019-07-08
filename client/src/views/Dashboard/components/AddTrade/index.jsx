@@ -27,6 +27,9 @@ function AddTrade(props) {
     closingprice: null,
     reasonforexit: '',
     emotionalstate: '',
+    outcome: '',
+    gain: '',
+    followedplan: '',
     owner: [
       {
         email: props.user.email,
@@ -50,7 +53,51 @@ function AddTrade(props) {
     });
   }
 
+  function evaluateOutcome() {
+  
+  // evaluate gain, outcome & followedplan
+    if(newTrade.closingprice) {
+      if(newTrade.action.toLowerCase() == 'buy') {
+        newTrade.gain = ((newTrade.closingprice - newTrade.startingprice) * newTrade.stockquantity).toFixed(2);
+
+        if(newTrade.closingprice > newTrade.startingprice) {
+          newTrade.outcome = 'win';
+        }
+        else {
+          newTrade.outcome = 'loss';
+        }
+
+        const algoPercent = 0.10;
+        if ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
+            (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) {
+              newTrade.followedplan = 'Y';
+            } else newTrade.followedplan = 'N';
+      }
+      else {
+        newTrade.gain = ((newTrade.startingprice - newTrade.closingprice) * newTrade.stockquantity).toFixed(2);
+
+        if(newTrade.closingprice < newTrade.startingprice) {
+          newTrade.outcome = 'win';
+        }
+        else {
+          newTrade.outcome = 'loss';
+        }
+
+        const algoPercent = 0.10;
+        if ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
+            (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) {
+              newTrade.followedplan = 'Y';
+            } else newTrade.followedplan = 'N';
+      }
+    }
+    else {
+      newTrade.gain = '';
+      newTrade.outcome = '';
+    }
+  }
+
   function handleCreate() {
+    evaluateOutcome();
     props.addTrade(newTrade);
   }
 
