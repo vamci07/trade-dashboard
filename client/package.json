@@ -51,8 +51,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "precommit": "lint-staged",
-    "prettier": "prettier --write '**/*.{ts,js,css,html,json}'"
+    "prettier": "prettier --write '**/*.{ts,js,css,html,json}'",
+    "clean": "rimraf node_modules ./package-lock.json"
   },
   "lint-staged": {
     "*.{js,jsx}": [

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "clean": "rimraf node_modules ./package-lock.json"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "validator": "^11.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "rimraf": "^2.6.3"
   }
 }

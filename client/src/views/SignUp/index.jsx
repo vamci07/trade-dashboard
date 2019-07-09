@@ -17,7 +17,6 @@ import schema from './schema';
 import { connect } from 'react-redux';
 import { registerUser } from 'store/actions/authActions';
 
-
 function signUp() {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -29,17 +28,17 @@ function signUp() {
 function SignUp(props) {
   const [signUpState, setSignUpState] = useState({
     values: {
-      name:'',
+      name: '',
       email: '',
       password: ''
     },
     touched: {
-      name:false,
+      name: false,
       email: false,
       password: false
     },
     errors: {
-      name:null,
+      name: null,
       email: null,
       password: null
     },
@@ -66,13 +65,12 @@ function SignUp(props) {
     validateForm();
   }
 
-  function handleSignUp() {
+  async function handleSignUp() {
     try {
       const newState = { ...signUpState };
       newState.isLoading = true;
       setSignUpState(newState);
-      signUp(values);
-      props.registerUser(values);
+      await props.registerUser(values, props.history);
     } catch (error) {
       signUpState({
         ...signUpState,
@@ -84,13 +82,13 @@ function SignUp(props) {
 
   useEffect(() => {
     setTimeout(() => {
-     if (props.auth.isAuthenticated) {
+      if (props.auth.isAuthenticated) {
         setSignUpState({
           ...signUpState,
           isLoading: false
         });
-//        props.history.push('/');
-     }
+        //        props.history.push('/');
+      }
     }, 1000);
   });
 
@@ -124,28 +122,28 @@ function SignUp(props) {
           </Typography>
           <div className={classes.fields}>
             <div className={classes.field}>
-                <TextField
-                  autoComplete="off"
-                  className={classes.textField}
-                  fullWidth
-                  label="Full Name"
-                  name="name"
-                  onChange={event =>
-                    handleFieldChange('name', event.target.value)
-                  }
-                  type="text"
-                  value={values.name}
-                  variant="outlined"
-                />
-                {showNameError && (
-                  <Typography
-                    className={classes.fieldError}
-                    variant="body2"
-                  >
-                    {errors.name[0]}
-                  </Typography>
-                )}
-              </div>
+              <TextField
+                autoComplete="off"
+                className={classes.textField}
+                fullWidth
+                label="Full Name"
+                name="name"
+                onChange={event =>
+                  handleFieldChange('name', event.target.value)
+                }
+                type="text"
+                value={values.name}
+                variant="outlined"
+              />
+              {showNameError && (
+                <Typography
+                  className={classes.fieldError}
+                  variant="body2"
+                >
+                  {errors.name[0]}
+                </Typography>
+              )}
+            </div>
             <div className={classes.field}>
               <TextField
                 autoComplete="off"

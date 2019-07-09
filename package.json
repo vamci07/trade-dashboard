@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client-install": "npm install --prefix client",
-    "server-install": "npm install --prefix server",
+    "install:client": "npm install --prefix client",
+    "install:server": "npm install --prefix server",
     "server": "nodemon ./server/server.js",
     "client": "npm start --prefix client",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "full-install": "npm install --prefix server && npm install --prefix client"
+    "install:full": "npm install && npm install --prefix server && npm install --prefix client",
+    "clean": "rimraf node_modules ./package-lock.json"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "concurrently": "^4.1.1"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "rimraf": "^2.6.3"
   }
 }

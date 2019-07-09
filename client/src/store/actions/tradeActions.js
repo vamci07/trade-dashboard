@@ -21,6 +21,7 @@ export const createTrade = tradeData => dispatch => {
         type: CREATE_TRADE,
         payload: res.data
       });
+      dispatch(getTrades());
     })
     //   .catch(err => console.log(err));
     .catch(error => {
@@ -36,12 +37,13 @@ export const createTrade = tradeData => dispatch => {
 export const updateTrade = tradeData => dispatch => {
   axios
     .patch('/api/trades/update', tradeData)
-    .then(res =>
+    .then(res => {
       dispatch({
         type: UPDATE_TRADE,
         payload: res.data
-      })
-    )
+      });
+      dispatch(getTrades());
+    })
     .catch(err => console.log(err));
 };
 
@@ -49,12 +51,13 @@ export const updateTrade = tradeData => dispatch => {
 export const deleteTrade = id => dispatch => {
   axios
     .delete(`/api/trades/delete/${id}`)
-    .then(res =>
+    .then(res => {
       dispatch({
         type: DELETE_TRADE,
-        payload: id
-      })
-    )
+        payload: res
+      });
+      dispatch(getTrades());
+    })
     .catch(err => console.log(err));
 };
 
@@ -78,7 +81,7 @@ export const getTrade = id => dispatch => {
 };
 
 // Get all trades for specific user
-export const getTrades = action => dispatch => {
+export const getTrades = (action = 'OPEN') => dispatch => {
   dispatch(setTradesLoading());
   axios
     .get(`/api/trades/${action}`)

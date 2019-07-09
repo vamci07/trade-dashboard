@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
 import { connect } from 'react-redux';
-import { withStyles, Fab } from '@material-ui/core';
+import { withStyles, Fab, CardActions, IconButton } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
-import { Add as AddIcon } from '@material-ui/icons';
-import { Dashboard as DashboardLayout } from 'layouts';
+import {
+  Add as AddIcon,
+  Edit as UpdateIcon,
+  DeleteOutline as DeleteIcon
+} from '@material-ui/icons';
 import {
   getTrades,
   createTrade,
-  updateTrade
+  updateTrade,
+  deleteTrade
 } from 'store/actions/tradeActions';
 import AddTrade from './components/AddTrade';
-import { StyledCard, StyledCardHeader, StyledCardContent } from './style';
-import { red, green } from '@material-ui/core/colors';
+import { StyledCard, StyledCardHeader } from './style';
+import { red, green, common } from '@material-ui/core/colors';
 import UpdateTrade from './components/UpdateTrade';
-// Component styles
+
 const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 4
@@ -26,51 +29,91 @@ const styles = theme => ({
   }
 });
 
+function dashReducer(state, action) {
+  switch (action.type) {
+    case 'ADDTRADEDIALOG': {
+      return { ...state, addTradeOpen: !state.addTradeOpen };
+    }
+    case 'UDPATETRADEDIALOG': {
+      return { ...state, updateTradeOpen: !state.updateTradeOpen };
+    }
+    case 'TRADES': {
+      return { ...state, trades: action.trades };
+    }
+    case 'SETTRADEOBJ': {
+      return { ...state, tradeObj: action.tradeObj };
+    }
+    case 'UPDATETRADEOBJ': {
+      return { ...state, updateTradeObj: action.trade };
+    }
+    case 'STOCKDATA': {
+      return { ...state, stockData: action.data.data };
+    }
+    default: {
+      throw new Error(`Unhandled action type: ${action.type}`);
+    }
+  }
+}
+
 function Dashboard(props) {
-  const [trades, setTrades] = useState([]);
-  const [addTradeOpen, setAddTradeOpen] = useState(false);
-  const [updateTradeOpen, setUpdateTradeOpen] = useState(false);
-  const [updateTradeObj, setUpdateTradeObj] = useState({});
-  const [tradeObj, setTradeObj] = useState({
-    stock: '',
-    action: '',
-    stockquantity: 0,
-    startingprice: 0,
-    stoploss: 0,
-    targetprice: 0,
-    reasonfortrade: '',
-    closingprice: 0,
-    reasonforexit: '',
-    emotionalstate: '',
-    outcome: '',
-    gain: '',
-    followedplan: '',
-    owner: [
-      {
-        email: '',
-        name: ''
-      }
-    ]
+  const [state, dispatch] = useReducer(dashReducer, {
+    trades: [],
+    addTradeOpen: false,
+    updateTradeOpen: false,
+    updateTradeObj: {},
+    tradeObj: {
+      stock: '',
+      action: '',
+      stockquantity: 0,
+      startingprice: 0,
+      stoploss: 0,
+      targetprice: 0,
+      reasonfortrade: '',
+      closingprice: 0,
+      reasonforexit: '',
+      emotionalstate: '',
+      owner: [
+        {
+          email: '',
+          name: ''
+        }
+      ]
+    },
+    stockData: []
   });
 
-  const [stockData, setStockData] = useState([]);
+  const {
+    trades,
+    addTradeOpen,
+    updateTradeOpen,
+    updateTradeObj,
+    tradeObj,
+    stockData
+  } = state;
 
   async function addTrade(newTrade) {
     await props.createTrade(newTrade);
-    setAddTradeOpen(!addTradeOpen);
+    dispatch({ type: 'SETTRADEOBJ', newTrade });
+    dispatch({ type: 'ADDTRADEDIALOG' });
   }
 
   async function updateTradeFn(updateTradeObj) {
+    console.log(updateTradeObj);
     await props.updateTrade(updateTradeObj);
-    setUpdateTradeOpen(!updateTradeOpen);
+    // await dispatch({ type: 'UPDATETRADEOBJ', updateTradeObj });
+    dispatch({ type: 'UDPATETRADEDIALOG' });
+  }
+
+  async function deleteTrade(id) {
+    await props.deleteTrade(id);
   }
 
   async function setTradesToState(trades) {
-    await setTrades(trades);
+    dispatch({ type: 'TRADES', trades });
   }
 
   async function setTradeObjToState(trade) {
-    setTradeObj(trade);
+    dispatch({ type: 'SETTRADEOBJ', trade });
   }
 
   useEffect(() => {
@@ -92,89 +135,144 @@ function Dashboard(props) {
   }, []);
 
   useEffect(() => {
-    setTradesToState(props.trades);
     const { trades } = props;
+    setTradesToState(props.trades);
+    setTradeObjToState({
+      ...tradeObj,
+      owner: [
+        {
+          email: props.auth.user.email,
+          name: props.auth.user.name
+        }
+      ]
+    });
     let symString = '';
-    if(Object.keys(trades).length > 0) {
-      trades && trades.map(trade => {
-          if(!trade.closingprice) {
-            symString = symString + trade.stock + ',';
+    if (Object.keys(trades).length > 0) {
+      let openTrades = 0;
+      trades &&
+        trades.map(trade => {
+          if (!trade.closingprice) {
+            if (openTrades < 5) {
+              symString = symString + trade.stock + ',';
+            }
+            openTrades++;
           }
         });
-      if(symString.length > 0) {
+      if (symString.length > 0) {
         symString = symString.slice(0, -1);
         let params = {};
         params = symString && {
           symbol: symString,
-          api_token: 'sNL6zdO10egtQOUQMk4wlEvrMPJpYxZmQLZS2OoKEO7seH701ZtuwdLt8set'
+          api_token:
+            'gwfW78tA71XsiBYJbEQB8CgeL88K73aGiGfbpLEwaHszuYe5KpgMNWgSIsY3'
         };
+        /* const headers = {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers':
+            'Origin, X-Requested-With, Content-Type, Accept'
+        }; */
         axios({
           url: 'https://api.worldtradingdata.com/api/v1/stock',
           method: 'get',
           params: params
         })
-          .then(
-            res => res && res.data && res.data.data && setStockData(res.data.data)
-          )
+          .then(res => {
+            const { data: data } = res;
+            data && dispatch({ type: 'STOCKDATA', data });
+          })
+          // eslint-disable-next-line no-console
           .catch(err => console.log(err));
       }
     }
   }, [props.trades]);
 
   function openAddTradeDialog() {
-    setAddTradeOpen(!addTradeOpen);
+    dispatch({ type: 'ADDTRADEDIALOG' });
   }
 
   function openUpdateTradeDialog(trade) {
-    setUpdateTradeObj(trade);
-    setUpdateTradeOpen(!updateTradeOpen);
+    dispatch({ type: 'UPDATETRADEOBJ', trade });
+    dispatch({ type: 'UDPATETRADEDIALOG' });
   }
 
-  const { classes } = props;
   return (
     <>
       <Grid
         container
         spacing={4}
       >
-        {trades.map(trade => {
-          if(!trade.closingprice) {
-            return (
-              <Grid
-                item
-                key={trade.id}
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                {stockData.map(stock => {
-                  if (stock.symbol === trade.stock) {
-                    const displayPercent = (
-                      ((stock.price - trade.startingprice) * 100) /
-                      trade.startingprice
-                    ).toFixed(2);
-                    let color = '';
-                    if (displayPercent < 0) {
-                      color = red[300];
-                    } else {
-                      color = green[300];
+        {trades &&
+          trades.map(trade => {
+            if (!trade.closingprice) {
+              return (
+                <Grid
+                  item
+                  key={trade.id}
+                  lg={3}
+                  sm={6}
+                  xl={3}
+                  xs={12}
+                >
+                  {stockData.map(stock => {
+                    if (stock.symbol === trade.stock) {
+                      const displayPercent = (
+                        ((stock.price - trade.startingprice) * 100) /
+                        trade.startingprice
+                      ).toFixed(2);
+                      let color = '';
+                      if (displayPercent < 0) {
+                        color = red[300];
+                      } else {
+                        color = green[300];
+                      }
+                      console.log(trade);
+                      return (
+                        <StyledCard
+                          color={color}
+                          style={{ cursor: 'default' }}
+                        >
+                          <StyledCardHeader
+                            title={
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between'
+                                }}
+                              >
+                                <span>{trade.stock}</span>
+                                <span style={{ fontWeight: 600, fontSize: 14 }}>
+                                  {displayPercent}
+                                </span>
+                              </div>
+                            }
+                          />
+                          <CardActions
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'flex-end'
+                            }}
+                          >
+                            <IconButton
+                              onClick={() => openUpdateTradeDialog(trade)}
+                            >
+                              <UpdateIcon style={{ color: common.white }} />
+                            </IconButton>
+                            <IconButton onClick={() => deleteTrade(trade._id)}>
+                              <DeleteIcon style={{ color: common.white }} />
+                            </IconButton>
+                          </CardActions>
+                        </StyledCard>
+                      );
                     }
-                    return (
-                      <StyledCard
-                        color={color}
-                        onClick={() => openUpdateTradeDialog(trade)}
-                      >
-                        <StyledCardHeader title={trade.stock} />
-                        <StyledCardContent>{displayPercent}%</StyledCardContent>
-                      </StyledCard>
-                    );
-                  }
-                })}
-              </Grid>
-            );
-          }
-        })}
+                  })}
+                </Grid>
+              );
+            }
+          })}
       </Grid>
       <AddTrade
         addTrade={addTrade}
@@ -183,7 +281,7 @@ function Dashboard(props) {
         tradeObj={tradeObj}
         user={props.auth.user}
       />
-      {openUpdateTradeDialog && (
+      {updateTradeOpen && (
         <UpdateTrade
           onClose={openUpdateTradeDialog}
           open={updateTradeOpen}
@@ -205,10 +303,12 @@ function Dashboard(props) {
 
 Dashboard.propTypes = {
   auth: PropTypes.object,
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
+  createTrade: PropTypes.func,
   getTrades: PropTypes.func,
   history: PropTypes.object,
-  trades: PropTypes.array
+  trades: PropTypes.array,
+  updateTrade: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -218,5 +318,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTrades, createTrade, updateTrade }
+  { getTrades, createTrade, updateTrade, deleteTrade }
 )(withStyles(styles)(Dashboard));
