@@ -4,7 +4,6 @@ import { Dashboard as DashboardLayout } from 'layouts';
 import Dashboard from 'views/Dashboard';
 import History from 'views/History';
 import DevicesChart from 'views/Analytics';
-import UnderDevelopment from 'views/UnderDevelopment';
 import NotFound from 'views/NotFound';
 import { withStyles } from '@material-ui/core';
 

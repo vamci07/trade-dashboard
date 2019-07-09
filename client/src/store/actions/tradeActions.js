@@ -10,7 +10,7 @@ import {
   TRADES_LOADING
 } from './types';
 
-import { GET_ERRORS } from './types';
+import { SET_ERRORS } from './types';
 
 // Create trade
 export const createTrade = tradeData => dispatch => {
@@ -27,7 +27,7 @@ export const createTrade = tradeData => dispatch => {
     .catch(error => {
       const { data } = error.response;
       dispatch({
-        type: GET_ERRORS,
+        type: SET_ERRORS,
         payload: data
       });
     });
