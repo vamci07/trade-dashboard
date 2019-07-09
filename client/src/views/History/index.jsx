@@ -27,45 +27,40 @@ import { red, green } from '@material-ui/core/colors';
 function History(props) {
   const [trades, setTrades] = useState([]);
 
-
-
   useEffect(() => {
     if (!props.auth.isAuthenticated) {
       props.history.push('/');
     } else {
-//      props.getTrades('ALL');
+      //      props.getTrades('ALL');
       setTradesToState(props.trades);
     }
   }, []);
-    
- async function setTradesToState(trades) {
+
+  async function setTradesToState(trades) {
     await setTrades(trades);
   }
-
-
 
   const useStyles1 = makeStyles(theme => ({
     root: {
       flexShrink: 0,
       color: theme.palette.text.primary,
 
-      marginLeft: theme.spacing(2.5),
-    },
+      marginLeft: theme.spacing(2.5)
+    }
   }));
 
   const useStyles2 = makeStyles(theme => ({
     root: {
       width: '100%',
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(3)
     },
     table: {
-      minWidth: 500,
+      minWidth: 500
     },
     tableWrapper: {
-      overflowX: 'auto',
-    },
+      overflowX: 'auto'
+    }
   }));
-
 
   function TablePaginationActions(props) {
     const classes = useStyles1();
@@ -91,26 +86,38 @@ function History(props) {
     return (
       <div className={classes.root}>
         <IconButton
-          onClick={handleFirstPageButtonClick}
-          disabled={page === 0}
           aria-label="First Page"
+          disabled={page === 0}
+          onClick={handleFirstPageButtonClick}
         >
           {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
         </IconButton>
-        <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="Previous Page">
-          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-        </IconButton>
         <IconButton
-          onClick={handleNextButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="Next Page"
+          aria-label="Previous Page"
+          disabled={page === 0}
+          onClick={handleBackButtonClick}
         >
-          {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+          {theme.direction === 'rtl' ? (
+            <KeyboardArrowRight />
+          ) : (
+            <KeyboardArrowLeft />
+          )}
         </IconButton>
         <IconButton
-          onClick={handleLastPageButtonClick}
+          aria-label="Next Page"
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          onClick={handleNextButtonClick}
+        >
+          {theme.direction === 'rtl' ? (
+            <KeyboardArrowLeft />
+          ) : (
+            <KeyboardArrowRight />
+          )}
+        </IconButton>
+        <IconButton
           aria-label="Last Page"
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          onClick={handleLastPageButtonClick}
         >
           {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
         </IconButton>
@@ -122,93 +129,94 @@ function History(props) {
     count: PropTypes.number.isRequired,
     onChangePage: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired
   };
 
-//  function CustomPaginationActionsTable() {
-    const classes = useStyles2();
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  //  function CustomPaginationActionsTable() {
+  const classes = useStyles2();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.trades.length - page * rowsPerPage);
+  const emptyRows =
+    rowsPerPage -
+    Math.min(rowsPerPage, props.trades.length - page * rowsPerPage);
 
-    function handleChangePage(event, newPage) {
-      setPage(newPage);
-    }
+  function handleChangePage(event, newPage) {
+    setPage(newPage);
+  }
 
-    function handleChangeRowsPerPage(event) {
-      setRowsPerPage(parseInt(event.target.value, 10));
-    }
-   
+  function handleChangeRowsPerPage(event) {
+    setRowsPerPage(parseInt(event.target.value, 10));
+  }
 
-    return (
-      <Paper className={classes.root}>
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table}>
-            <TableHead>
-                <TableRow>
-                  <TableCell align="right">Stock</TableCell>
-                  <TableCell align="right">Name</TableCell>
-                  <TableCell align="right">Action</TableCell>
-                  <TableCell align="right">Quantity</TableCell>
-                  <TableCell align="right">Starting Price</TableCell>
-                  <TableCell align="right">Stoploss</TableCell>
-                  <TableCell align="right">Target Price</TableCell>
-                  <TableCell align="right">Closing Price</TableCell>
-                  <TableCell align="right">Gain / Loss</TableCell>
-                  <TableCell align="right">Emotions</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-              {props.trades.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(trade => {
+  return (
+    <Paper className={classes.root}>
+      <div className={classes.tableWrapper}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Stock</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Action</TableCell>
+              <TableCell align="left">Quantity</TableCell>
+              <TableCell align="left">Starting Price</TableCell>
+              <TableCell align="left">Stoploss</TableCell>
+              <TableCell align="left">Target Price</TableCell>
+              <TableCell align="left">Closing Price</TableCell>
+              <TableCell align="left">Gain / Loss</TableCell>
+              <TableCell align="left">Emotions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.trades
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map(trade => {
                 return (
-                <TableRow key={trade.stock}>
-                  <TableCell align="right">{trade.stock}</TableCell>
-                  <TableCell align="right">{trade.stockname}</TableCell>
-                  <TableCell align="right">{trade.action}</TableCell>
-                  <TableCell align="right">{trade.stockquantity}</TableCell>
-                  <TableCell align="right">{trade.startingprice}</TableCell>
-                  <TableCell align="right">{trade.stoploss}</TableCell>
-                  <TableCell align="right">{trade.targetprice}</TableCell>
-                  <TableCell align="right">{trade.closingprice}</TableCell>
-                  <TableCell align="right">{trade.gain}</TableCell>
-                  <TableCell align="right">{trade.emotionalstate}</TableCell>
-                </TableRow>
+                  <TableRow key={trade.stock}>
+                    <TableCell align="left">{trade.stock}</TableCell>
+                    <TableCell align="left">{trade.stockname}</TableCell>
+                    <TableCell align="left">{trade.action}</TableCell>
+                    <TableCell align="left">{trade.stockquantity}</TableCell>
+                    <TableCell align="left">{trade.startingprice}</TableCell>
+                    <TableCell align="left">{trade.stoploss}</TableCell>
+                    <TableCell align="left">{trade.targetprice}</TableCell>
+                    <TableCell align="left">{trade.closingprice}</TableCell>
+                    <TableCell align="left">{trade.gain}</TableCell>
+                    <TableCell align="left">{trade.emotionalstate}</TableCell>
+                  </TableRow>
                 );
               })}
 
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 48 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  colSpan={3}
-                  count={props.trades.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: { 'aria-label': 'Rows per page' },
-                    native: true,
-                  }}
-                  onChangePage={handleChangePage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 48 * emptyRows }}>
+                <TableCell colSpan={6} />
               </TableRow>
-            </TableFooter>
-          </Table>
-        </div>
-      </Paper>
-    );
- // }
-
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                ActionsComponent={TablePaginationActions}
+                colSpan={3}
+                count={props.trades.length}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+                SelectProps={{
+                  inputProps: { 'aria-label': 'Rows per page' },
+                  native: true
+                }}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
+    </Paper>
+  );
+  // }
 }
-
 
 History.propTypes = {
   auth: PropTypes.object,
@@ -225,5 +233,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTrades}
+  { getTrades }
 )(withStyles()(History));
