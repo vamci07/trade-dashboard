@@ -65,7 +65,7 @@ function UpdateTrade(props) {
           updateTradeObj.outcome = 'loss';
         }
 
-        const algoPercent = 0.1;
+        const algoPercent = 0.05;
         if (
           (updateTradeObj.closingprice >
             updateTradeObj.targetprice * (1 - algoPercent) &&
@@ -89,7 +89,7 @@ function UpdateTrade(props) {
           updateTradeObj.outcome = 'loss';
         }
 
-        const algoPercent = 0.1;
+        const algoPercent = 0.05;
         if (
           (updateTradeObj.closingprice >
             updateTradeObj.targetprice * (1 - algoPercent) &&

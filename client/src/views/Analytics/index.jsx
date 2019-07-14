@@ -174,7 +174,7 @@ trades.map(trade => {
                 <ThumbUpIcon className={classes.deviceIcon} />
                 <Typography variant="body1">{data.labels[0]}</Typography>
                 <Typography
-                  style={{ color: palette.primary.main }}
+                  style={{ color: palette.success.main }}
                   variant="h2"
                 >
                   {data.datasets[0].data[0]}%

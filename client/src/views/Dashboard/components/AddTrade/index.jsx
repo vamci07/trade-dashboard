@@ -67,7 +67,7 @@ function AddTrade(props) {
           newTrade.outcome = 'loss';
         }
 
-        const algoPercent = 0.10;
+        const algoPercent = 0.05;
         if ( ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
             (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) ||
             ( (newTrade.closingprice > newTrade.stoploss*(1 - algoPercent) ) &&
@@ -87,7 +87,7 @@ function AddTrade(props) {
           newTrade.outcome = 'loss';
         }
 
-        const algoPercent = 0.10;
+        const algoPercent = 0.05;
         if ( ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
             (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) ||
             ( (newTrade.closingprice > newTrade.stoploss*(1 - algoPercent) ) &&
