@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // Externals
 import { Doughnut } from 'react-chartjs-2';
@@ -9,14 +9,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 
 // Material components
-import { IconButton, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 // Material icons
 import {
-  LaptopMac as LaptopMacIcon,
-  PhoneIphone as PhoneIphoneIcon,
-  Refresh as RefreshIcon,
-  TabletMac as TabletMacIcon,
   ThumbUpRounded as ThumbUpIcon,
   ThumbDownRounded as ThumbDownIcon,
   ThumbsUpDownRounded as ThumbUpDownIcon
@@ -27,7 +23,6 @@ import {
   Portlet,
   PortletHeader,
   PortletLabel,
-  PortletToolbar,
   PortletContent
 } from 'components';
 
@@ -39,23 +34,6 @@ import { data, options, WinDrillDown, LossDrillDown } from './chart';
 
 // Component styles
 import styles from './style';
-/*
-const [trades, setTrades] = useState([]);
-
-useEffect(() => {
-  if (!this.props.auth.isAuthenticated) {
-    this.props.history.push('/');
-  } else {
-    this.props.getTrades('ALL');
-    setTradesToState(this.props.trades);
-  }
-}, []);
-  
-async function setTradesToState(trades) {
-  await setTrades(trades);
-};
-*/
-function prepareChartData(props) {}
 
 class DevicesChart extends Component {
   //function DevicesChart (props) {
@@ -66,10 +44,6 @@ class DevicesChart extends Component {
       width: '500px',
       float: 'left'
     };
-    var style2 = {
-      width: '500px',
-      float: 'auto'
-    };
 
     const rootClassName = classNames(classes.root, className);
     let tradeData = [];
@@ -79,36 +53,55 @@ class DevicesChart extends Component {
     let followedPlanOnWins = 0;
     let followedPlanOnLoss = 0;
 
+/*
     trades &&
       trades.map(trade => {
         if (trade.closingprice) {
           if (trade.closingprice > trade.startingprice) {
-            if (trade.action.toLowerCase() == 'buy') {
+            if (trade.action.toLowerCase() === 'buy') {
               totalWins = totalWins + 1;
-              if (trade.followedplan.toLowerCase() == 'y') {
+              if (trade.followedplan.toLowerCase() === 'y') {
                 followedPlanOnWins = followedPlanOnWins + 1;
               }
             } else {
               totalLost = totalLost + 1;
-              if (trade.followedplan.toLowerCase() == 'y') {
+              if (trade.followedplan.toLowerCase() === 'y') {
                 followedPlanOnLoss = followedPlanOnLoss + 1;
               }
             }
           } else {
-            if (trade.action.toLowerCase() == 'buy') {
+            if (trade.action.toLowerCase() === 'buy') {
               totalLost = totalLost + 1;
-              if (trade.followedplan.toLowerCase() == 'y') {
+              if (trade.followedplan.toLowerCase() === 'y') {
                 followedPlanOnLoss = followedPlanOnLoss + 1;
               }
             } else {
               totalWins = totalWins + 1;
-              if (trade.followedplan.toLowerCase() == 'y') {
+              if (trade.followedplan.toLowerCase() === 'y') {
                 followedPlanOnWins = followedPlanOnWins + 1;
               }
             }
           }
         }
       });
+*/
+
+trades &&
+trades.map(trade => {
+  if (trade.closingprice) {
+    if (trade.outcome.toLowerCase() === 'win') {
+        totalWins = totalWins + 1;
+        if (trade.followedplan.toLowerCase() === 'y') {
+          followedPlanOnWins = followedPlanOnWins + 1;
+        }
+    } else {
+        totalLost = totalLost + 1;
+        if (trade.followedplan.toLowerCase() === 'y') {
+          followedPlanOnLoss = followedPlanOnLoss + 1;
+        }
+      } 
+    }
+});
 
     let percentWins = ((totalWins * 100) / totalTrades).toFixed(0);
     let percentLost = ((totalLost * 100) / totalTrades).toFixed(0);

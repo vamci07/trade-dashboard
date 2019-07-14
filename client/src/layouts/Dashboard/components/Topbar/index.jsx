@@ -13,7 +13,6 @@ import { withStyles } from '@material-ui/core';
 
 // Material components
 import {
-  Badge,
   IconButton,
   Popover,
   Toolbar,
@@ -22,7 +21,6 @@ import {
 
 // Material icons
 import {
-  NotificationsOutlined as NotificationsIcon,
   Input as InputIcon
 } from '@material-ui/icons';
 
@@ -102,7 +100,7 @@ class Topbar extends Component {
 
   render() {
     const { classes, className, title } = this.props;
-    const { notifications, notificationsCount, notificationsEl } = this.state;
+    const { notifications, notificationsEl } = this.state;
 
     const rootClassName = classNames(classes.root, className);
     const showNotifications = Boolean(notificationsEl);
@@ -117,18 +115,6 @@ class Topbar extends Component {
             >
               {title}
             </Typography>
-            <IconButton
-              className={classes.notificationsButton}
-              onClick={this.handleShowNotifications}
-            >
-              <Badge
-                badgeContent={notificationsCount}
-                color="primary"
-                variant="dot"
-              >
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               className={classes.signOutButton}
               onClick={this.handleSignOut}

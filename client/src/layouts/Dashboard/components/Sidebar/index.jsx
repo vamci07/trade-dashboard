@@ -24,7 +24,6 @@ import {
   Code as CodeIcon,
   DashboardOutlined as DashboardIcon,
   List as ListIcon,
-  AccountBoxOutlined as AccountBoxIcon,
   TrendingUpOutlined as TrendingUpIcon,
   SettingsOutlined as SettingsIcon,
   ChevronLeft as CollapseIcon

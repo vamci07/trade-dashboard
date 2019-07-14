@@ -57,7 +57,7 @@ function AddTrade(props) {
   
   // evaluate gain, outcome & followedplan
     if(newTrade.closingprice) {
-      if(newTrade.action.toLowerCase() == 'buy') {
+      if(newTrade.action.toLowerCase() === 'buy') {
         newTrade.gain = ((newTrade.closingprice - newTrade.startingprice) * newTrade.stockquantity).toFixed(2);
 
         if(newTrade.closingprice > newTrade.startingprice) {
@@ -68,8 +68,12 @@ function AddTrade(props) {
         }
 
         const algoPercent = 0.10;
-        if ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
-            (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) {
+        if ( ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
+            (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) ||
+            ( (newTrade.closingprice > newTrade.stoploss*(1 - algoPercent) ) &&
+            (newTrade.closingprice < newTrade.stoploss*(1 + algoPercent) ) ) 
+        )
+            {
               newTrade.followedplan = 'Y';
             } else newTrade.followedplan = 'N';
       }
@@ -84,8 +88,11 @@ function AddTrade(props) {
         }
 
         const algoPercent = 0.10;
-        if ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
-            (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) {
+        if ( ( (newTrade.closingprice > newTrade.targetprice*(1 - algoPercent) ) &&
+            (newTrade.closingprice < newTrade.targetprice*(1 + algoPercent) ) ) ||
+            ( (newTrade.closingprice > newTrade.stoploss*(1 - algoPercent) ) &&
+            (newTrade.closingprice < newTrade.stoploss*(1 + algoPercent) ) )
+        ){
               newTrade.followedplan = 'Y';
             } else newTrade.followedplan = 'N';
       }

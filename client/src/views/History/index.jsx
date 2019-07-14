@@ -14,18 +14,13 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import axios from 'axios';
 
 import { connect } from 'react-redux';
-import { withStyles, Fab } from '@material-ui/core';
-import { Grid } from '@material-ui/core';
-import { Add as AddIcon } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core';
 import { getTrades } from 'store/actions/tradeActions';
-import { StyledCard, StyledCardHeader, StyledCardContent } from './style';
-import { red, green } from '@material-ui/core/colors';
 
 function History(props) {
-  const [trades, setTrades] = useState([]);
+  const [, setTrades] = useState([]);
 
   useEffect(() => {
     if (!props.auth.isAuthenticated) {
@@ -132,7 +127,7 @@ function History(props) {
     rowsPerPage: PropTypes.number.isRequired
   };
 
-  //  function CustomPaginationActionsTable() {
+  //function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -147,6 +142,7 @@ function History(props) {
 
   function handleChangeRowsPerPage(event) {
     setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   }
 
   return (
@@ -172,7 +168,7 @@ function History(props) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(trade => {
                 return (
-                  <TableRow key={trade.stock}>
+                  <TableRow key={trade._id}>
                     <TableCell align="left">{trade.stock}</TableCell>
                     <TableCell align="left">{trade.stockname}</TableCell>
                     <TableCell align="left">{trade.action}</TableCell>
@@ -215,7 +211,7 @@ function History(props) {
       </div>
     </Paper>
   );
-  // }
+  //}
 }
 
 History.propTypes = {

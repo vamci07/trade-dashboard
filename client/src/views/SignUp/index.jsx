@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import validate from 'validate.js';
@@ -17,13 +17,6 @@ import schema from './schema';
 import { connect } from 'react-redux';
 import { registerUser } from 'store/actions/authActions';
 
-function signUp() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1500);
-  });
-}
 
 function SignUp(props) {
   const [signUpState, setSignUpState] = useState({

@@ -2,7 +2,6 @@ import { white, black } from '@material-ui/core/colors/common';
 import {
   grey,
   green,
-  teal,
   blue,
   orange,
   red,

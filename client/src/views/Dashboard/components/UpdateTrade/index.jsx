@@ -53,7 +53,7 @@ function UpdateTrade(props) {
   function evaluateOutcome() {
     // calculate gain
     if (updateTradeObj.closingprice) {
-      if (updateTradeObj.action.toLowerCase() == 'buy') {
+      if (updateTradeObj.action.toLowerCase() === 'buy') {
         updateTradeObj.gain = (
           (updateTradeObj.closingprice - updateTradeObj.startingprice) *
           updateTradeObj.stockquantity
@@ -67,10 +67,14 @@ function UpdateTrade(props) {
 
         const algoPercent = 0.1;
         if (
-          updateTradeObj.closingprice >
+          (updateTradeObj.closingprice >
             updateTradeObj.targetprice * (1 - algoPercent) &&
           updateTradeObj.closingprice <
-            updateTradeObj.targetprice * (1 + algoPercent)
+            updateTradeObj.targetprice * (1 + algoPercent))  ||
+            (updateTradeObj.closingprice >
+              updateTradeObj.stoploss * (1 - algoPercent) &&
+            updateTradeObj.closingprice <
+              updateTradeObj.stoploss * (1 + algoPercent))
         ) {
           updateTradeObj.followedplan = 'Y';
         } else updateTradeObj.followedplan = 'N';
@@ -87,10 +91,14 @@ function UpdateTrade(props) {
 
         const algoPercent = 0.1;
         if (
-          updateTradeObj.closingprice >
+          (updateTradeObj.closingprice >
             updateTradeObj.targetprice * (1 - algoPercent) &&
           updateTradeObj.closingprice <
-            updateTradeObj.targetprice * (1 + algoPercent)
+            updateTradeObj.targetprice * (1 + algoPercent)) ||
+          (updateTradeObj.closingprice >
+            updateTradeObj.stoploss * (1 - algoPercent) &&
+          updateTradeObj.closingprice <
+            updateTradeObj.stoploss * (1 + algoPercent))
         ) {
           updateTradeObj.followedplan = 'Y';
         } else updateTradeObj.followedplan = 'N';

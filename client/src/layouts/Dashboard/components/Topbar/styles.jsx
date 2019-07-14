@@ -1,4 +1,3 @@
-import { Z_FIXED } from "zlib";
 
 export default theme => ({
   root: {
@@ -24,6 +23,7 @@ export default theme => ({
     marginLeft: 'auto'
   },
   signOutButton: {
-    marginLeft: theme.spacing.unit
+    marginLeft: 'auto'
+//    marginLeft: theme.spacing.unit
   }
 });
