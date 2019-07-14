@@ -52,7 +52,7 @@ class SidebarCollapsed extends Component {
         <div className={classes.profile}>
           <Link to="/account">
             <Avatar
-              alt="Roman Kutepov"
+              alt="Name"
               className={classes.avatar}
               src="/images/avatars/low-res.png"
             />

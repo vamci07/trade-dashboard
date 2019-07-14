@@ -34,7 +34,7 @@ import styles from './styles';
 
 class Sidebar extends Component {
   render() {
-    const { classes, className, onToggleSidebar } = this.props;
+    const { classes, className, onToggleSidebar, auth } = this.props;
 
     const rootClassName = classNames(classes.root, className);
 
@@ -57,23 +57,11 @@ class Sidebar extends Component {
         <div className={classes.profile}>
           <Link to="/account">
             <Avatar
-              alt="Roman Kutepov"
+              alt="Name"
               className={classes.avatar}
               src="/images/avatars/high-res.png"
             />
           </Link>
-          <Typography
-            className={classes.nameText}
-            variant="h6"
-          >
-            Roman Kutepov
-          </Typography>
-          <Typography
-            className={classes.bioText}
-            variant="caption"
-          >
-            Brain Director
-          </Typography>
         </div>
         <Divider className={classes.profileDivider} />
         <List
