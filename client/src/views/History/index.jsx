@@ -19,6 +19,7 @@ import {
   SaveAlt as SaveAltIcon
 } from '@material-ui/icons';
 import { red, green, common } from '@material-ui/core/colors';
+import TextField from '@material-ui/core/TextField';
 
 import { connect } from 'react-redux';
 import { withStyles, Button } from '@material-ui/core';
@@ -26,47 +27,6 @@ import { getTrades } from 'store/actions/tradeActions';
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-
-const dataSet1 = [
-  {
-      name: "Johson",
-      amount: 30000,
-      sex: 'M',
-      is_married: true
-  },
-  {
-      name: "Monika",
-      amount: 355000,
-      sex: 'F',
-      is_married: false
-  },
-  {
-      name: "John",
-      amount: 250000,
-      sex: 'M',
-      is_married: false
-  },
-  {
-      name: "Josef",
-      amount: 450500,
-      sex: 'M',
-      is_married: true
-  }
-];
-
-var dataSet2 = [
-  {
-      name: "Johnson",
-      total: 25,
-      remainig: 16
-  },
-  {
-      name: "Josef",
-      total: 25,
-      remainig: 7
-  }
-];
-
 
 function History(props) {
   const [, setTrades] = useState([]);
@@ -103,6 +63,19 @@ function History(props) {
     },
     tableWrapper: {
       overflowX: 'auto'
+    },
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 200,
+    },
+    SaveAltIcon: {
+      marginLeft: '875px',
+      margintop: '24px'
     }
   }));
 
@@ -177,6 +150,7 @@ function History(props) {
   };
 
   //function CustomPaginationActionsTable() {
+  
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -195,8 +169,29 @@ function History(props) {
   }
 
   return (
+
     <Paper className={classes.root}>
-            <ExcelFile element={<IconButton>
+      <div>
+          <form className={classes.container} noValidate>
+            <TextField
+              id="date"
+              label="Start Date"
+              type="date"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              id="date"
+              label="End Date"
+              type="date"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <ExcelFile element={<IconButton className={classes.SaveAltIcon}>
                   <SaveAltIcon style={{ color: common.black }} />
                 </IconButton>}>
                 <ExcelSheet data={props.trades} name="TradeJournal">
@@ -213,6 +208,8 @@ function History(props) {
                     <ExcelColumn label="Emotions" value="emotionalstate"/>
                 </ExcelSheet>
             </ExcelFile>
+          </form>
+      </div>
       <div className={classes.tableWrapper}>
         <Table className={classes.table}>
           <TableHead>
