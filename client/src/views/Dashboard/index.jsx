@@ -221,9 +221,9 @@ function Dashboard(props) {
                       ).toFixed(2);
                       let color = '';
                       if (displayPercent < 0) {
-                        color = red[300];
+                        color = red[400];
                       } else {
-                        color = green[300];
+                        color = green[400];
                       }
                       console.log(trade);
                       return (
@@ -243,7 +243,7 @@ function Dashboard(props) {
                               >
                                 <span>{trade.stock}</span>
                                 <span style={{ fontWeight: 600, fontSize: 14 }}>
-                                  {displayPercent}
+                                  {displayPercent}%
                                 </span>
                               </div>
                             }

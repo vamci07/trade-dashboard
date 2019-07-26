@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ReactExport from "react-export-excel";
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,10 +15,58 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import {
+  SaveAlt as SaveAltIcon
+} from '@material-ui/icons';
+import { red, green, common } from '@material-ui/core/colors';
 
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Button } from '@material-ui/core';
 import { getTrades } from 'store/actions/tradeActions';
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
+const dataSet1 = [
+  {
+      name: "Johson",
+      amount: 30000,
+      sex: 'M',
+      is_married: true
+  },
+  {
+      name: "Monika",
+      amount: 355000,
+      sex: 'F',
+      is_married: false
+  },
+  {
+      name: "John",
+      amount: 250000,
+      sex: 'M',
+      is_married: false
+  },
+  {
+      name: "Josef",
+      amount: 450500,
+      sex: 'M',
+      is_married: true
+  }
+];
+
+var dataSet2 = [
+  {
+      name: "Johnson",
+      total: 25,
+      remainig: 16
+  },
+  {
+      name: "Josef",
+      total: 25,
+      remainig: 7
+  }
+];
+
 
 function History(props) {
   const [, setTrades] = useState([]);
@@ -147,10 +196,28 @@ function History(props) {
 
   return (
     <Paper className={classes.root}>
+            <ExcelFile element={<IconButton>
+                  <SaveAltIcon style={{ color: common.black }} />
+                </IconButton>}>
+                <ExcelSheet data={props.trades} name="TradeJournal">
+                  <ExcelColumn label="EntryDate" value="date"/>
+                    <ExcelColumn label="Stock" value="stock"/>
+                    <ExcelColumn label="Name" value="stockname"/>
+                    <ExcelColumn label="Action" value="action"/>
+                    <ExcelColumn label="Quantity" value="stockquantity"/>
+                    <ExcelColumn label="Starting Price" value="startingprice"/>
+                    <ExcelColumn label="Stoploss" value="stoploss"/>
+                    <ExcelColumn label="Target Price" value="targetprice"/>
+                    <ExcelColumn label="Closing Price" value="closingprice"/>
+                    <ExcelColumn label="Gain / Loss" value="gain"/>
+                    <ExcelColumn label="Emotions" value="emotionalstate"/>
+                </ExcelSheet>
+            </ExcelFile>
       <div className={classes.tableWrapper}>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
+              <TableCell align="left">EntryDate  </TableCell>
               <TableCell align="left">Stock</TableCell>
               <TableCell align="left">Name</TableCell>
               <TableCell align="left">Action</TableCell>
@@ -169,6 +236,7 @@ function History(props) {
               .map(trade => {
                 return (
                   <TableRow key={trade._id}>
+                    <TableCell align="left">{trade.date.slice(0,10)}</TableCell>
                     <TableCell align="left">{trade.stock}</TableCell>
                     <TableCell align="left">{trade.stockname}</TableCell>
                     <TableCell align="left">{trade.action}</TableCell>
