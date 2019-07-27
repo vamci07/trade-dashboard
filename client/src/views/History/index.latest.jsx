@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactExport from "react-export-excel";
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,9 +20,6 @@ import {
 } from '@material-ui/icons';
 import { red, green, common } from '@material-ui/core/colors';
 import TextField from '@material-ui/core/TextField';
-import MUIDataTable from "mui-datatables";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 
 import { connect } from 'react-redux';
 import { withStyles, Button } from '@material-ui/core';
@@ -30,8 +27,6 @@ import { getTrades } from 'store/actions/tradeActions';
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-
-
 
 function History(props) {
   const [, setTrades] = useState([]);
@@ -57,103 +52,6 @@ function History(props) {
       marginLeft: theme.spacing(2.5)
     }
   }));
-
-
-  const columns = [
-    {
-      name: "date",
-      options: {
-        label: 'Entry Date',
-        filter: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const nf = value;
-          return nf.slice(0,10);
-        }
-      }
-    },
-    {
-      name: "stock",
-      options: {
-        label: 'Stock',
-        filter: true
-      }
-    },
-    {
-      name: "stockname",
-      options: {
-        label: 'Stock Name',
-        filter: false,
-        }
-    },
-    {
-      name: "action",
-      options: {
-        label: 'Action',
-        filter: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const nf = value;
-          return nf.toUpperCase();
-        }
-      }
-    },
-    {
-      name: "stockquantity",
-      options: {
-        label: 'Stock Quantity',
-        filter: false
-      }
-    },
-    {
-      name: "startingprice",
-      options: {
-        label: 'Starting Price',
-        filter: false
-      }
-    },
-    {
-      name: "stoploss",
-      options: {
-        label: 'Stop Loss',
-        filter: false,
-        }
-    },
-    {
-      name: "targetprice",
-      options: {
-        label: 'Target Price',
-        filter: false
-      }
-    },
-    {
-      name: "closingprice",
-      options: {
-        label: 'Closing Price',
-        filter: false
-      }
-    },
-    {
-      name: "gain",
-      options: {
-        label: 'Gain / Loss',
-        filter: true,
-        }
-    },
-    {
-      name: "emotionalstate",
-      options: {
-        label: 'Emotional State',
-        filter: true
-      }
-    }
-  ];
-
-  const options = {
-    filter: true,
-    filterType: "multiselect",
-    responsive: "scroll",
-    selectableRows: "none"
-//    resizableColumns: true
-  };
 
   const useStyles2 = makeStyles(theme => ({
     root: {
@@ -252,9 +150,7 @@ function History(props) {
   };
 
   //function CustomPaginationActionsTable() {
-
-
-
+  
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -274,12 +170,111 @@ function History(props) {
 
   return (
 
-      <MUIDataTable
-        title={"Trade List"}
-        data={props.trades}
-        columns={columns}
-        options={options}
-      />
+    <Paper className={classes.root}>
+      <div>
+          <form className={classes.container} noValidate>
+            <TextField
+              id="date"
+              label="Start Date"
+              type="date"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              id="date"
+              label="End Date"
+              type="date"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <ExcelFile element={<IconButton className={classes.SaveAltIcon}>
+                  <SaveAltIcon style={{ color: common.black }} />
+                </IconButton>}>
+                <ExcelSheet data={props.trades} name="TradeJournal">
+                  <ExcelColumn label="EntryDate" value="date"/>
+                    <ExcelColumn label="Stock" value="stock"/>
+                    <ExcelColumn label="Name" value="stockname"/>
+                    <ExcelColumn label="Action" value="action"/>
+                    <ExcelColumn label="Quantity" value="stockquantity"/>
+                    <ExcelColumn label="Starting Price" value="startingprice"/>
+                    <ExcelColumn label="Stoploss" value="stoploss"/>
+                    <ExcelColumn label="Target Price" value="targetprice"/>
+                    <ExcelColumn label="Closing Price" value="closingprice"/>
+                    <ExcelColumn label="Gain / Loss" value="gain"/>
+                    <ExcelColumn label="Emotions" value="emotionalstate"/>
+                </ExcelSheet>
+            </ExcelFile>
+          </form>
+      </div>
+      <div className={classes.tableWrapper}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">EntryDate  </TableCell>
+              <TableCell align="left">Stock</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Action</TableCell>
+              <TableCell align="left">Quantity</TableCell>
+              <TableCell align="left">Starting Price</TableCell>
+              <TableCell align="left">Stoploss</TableCell>
+              <TableCell align="left">Target Price</TableCell>
+              <TableCell align="left">Closing Price</TableCell>
+              <TableCell align="left">Gain / Loss</TableCell>
+              <TableCell align="left">Emotions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.trades
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map(trade => {
+                return (
+                  <TableRow key={trade._id}>
+                    <TableCell align="left">{trade.date.slice(0,10)}</TableCell>
+                    <TableCell align="left">{trade.stock}</TableCell>
+                    <TableCell align="left">{trade.stockname}</TableCell>
+                    <TableCell align="left">{trade.action}</TableCell>
+                    <TableCell align="left">{trade.stockquantity}</TableCell>
+                    <TableCell align="left">{trade.startingprice}</TableCell>
+                    <TableCell align="left">{trade.stoploss}</TableCell>
+                    <TableCell align="left">{trade.targetprice}</TableCell>
+                    <TableCell align="left">{trade.closingprice}</TableCell>
+                    <TableCell align="left">{trade.gain}</TableCell>
+                    <TableCell align="left">{trade.emotionalstate}</TableCell>
+                  </TableRow>
+                );
+              })}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 48 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                ActionsComponent={TablePaginationActions}
+                colSpan={3}
+                count={props.trades.length}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+                SelectProps={{
+                  inputProps: { 'aria-label': 'Rows per page' },
+                  native: true
+                }}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
+    </Paper>
   );
   //}
 }

@@ -78,12 +78,12 @@ router.post(
   async (req, res) => {
     // Form validation
 
-    // const { errors, isValid } = validateJournalInput(req.body);
+    const { errors, isValid } = validateTradeInput(req.body);
 
     // Check validation
-    /* if (!isValid) {
+    if (!isValid) {
       return res.status(400).json(errors);
-    } */
+    } 
 
     const OWNER = {
       id: req.user.id,
