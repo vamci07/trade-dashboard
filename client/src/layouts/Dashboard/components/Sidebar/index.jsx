@@ -26,7 +26,8 @@ import {
   List as ListIcon,
   TrendingUpOutlined as TrendingUpIcon,
   SettingsOutlined as SettingsIcon,
-  ChevronLeft as CollapseIcon
+  ChevronLeft as CollapseIcon,
+  TransformOutlined as TransformIcon
 } from '@material-ui/icons';
 
 // Component styles
@@ -108,6 +109,20 @@ class Sidebar extends Component {
             <ListItemText
               classes={{ primary: classes.listItemText }}
               primary="Analytics"
+            />
+          </ListItem>
+          <ListItem
+            activeClassName={classes.activeListItem}
+            className={classes.listItem}
+            component={NavLink}
+            to="/Pivots"
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <TransformIcon />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.listItemText }}
+              primary="Pivots"
             />
           </ListItem>
           <ListItem

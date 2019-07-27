@@ -144,6 +144,13 @@ function History(props) {
         label: 'Emotional State',
         filter: true
       }
+    },
+    {
+      name: "followedplan",
+      options: {
+        label: 'Plan Followed',
+        filter: true
+      }
     }
   ];
 

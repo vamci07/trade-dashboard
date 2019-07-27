@@ -4,6 +4,7 @@ import { Dashboard as DashboardLayout } from 'layouts';
 import Dashboard from 'views/Dashboard';
 import History from 'views/History';
 import DevicesChart from 'views/Analytics';
+import DataPivots from 'views/Pivots';
 import NotFound from 'views/NotFound';
 import { withStyles } from '@material-ui/core';
 
@@ -36,6 +37,11 @@ function Landing(props) {
           component={DevicesChart}
           exact
           path="/Analytics"
+        />
+        <Route
+          component={DataPivots}
+          exact
+          path="/Pivots"
         />
         <Route
           component={NotFound}

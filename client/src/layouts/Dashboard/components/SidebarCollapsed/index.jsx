@@ -24,7 +24,8 @@ import {
   List as ListIcon,
   TrendingUpOutlined as TrendingUpIcon,
   SettingsOutlined as SettingsIcon,
-  ChevronRight as ExpandIcon
+  ChevronRight as ExpandIcon,
+  TransformOutlined as TransformIcon
 } from '@material-ui/icons';
 
 // Component styles
@@ -91,6 +92,16 @@ class SidebarCollapsed extends Component {
           >
             <ListItemIcon className={classes.listItemIcon}>
               <TrendingUpIcon />
+            </ListItemIcon>
+          </ListItem>
+          <ListItem
+            activeClassName={classes.activeListItem}
+            className={classes.listItem}
+            component={NavLink}
+            to="/Pivots"
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <TransformIcon />
             </ListItemIcon>
           </ListItem>
           <ListItem
