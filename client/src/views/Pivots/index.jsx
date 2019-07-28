@@ -105,40 +105,40 @@ class DataPivots extends React.Component {
       Data.date = trade.date.slice(0,10);
       Data.year = trade.date.slice(0,4);
 //      Data.month = trade.date.slice(6,7) 
-      switch ( trade.date.slice(6,7) ){
-        case '1':
+      switch ( trade.date.slice(5,7) ){
+        case '01':
           Data.month = 'JAN';
           Data.quarter = 'Q1';
           break;
-        case '2':
+        case '02':
           Data.month = 'FEB';
           Data.quarter = 'Q1';
           break;
-        case '3':
+        case '03':
           Data.month = 'MAR';
           Data.quarter = 'Q1';
           break;
-        case '4':
+        case '04':
           Data.month = 'APR';
           Data.quarter = 'Q2';
           break;
-        case '5':
+        case '05':
           Data.month = 'MAY';
           Data.quarter = 'Q2';
           break;
-        case '6':
+        case '06':
           Data.month = 'JUN';
           Data.quarter = 'Q2';
           break;
-        case '7':
+        case '07':
           Data.month = 'JUL';
           Data.quarter = 'Q3';
           break;
-        case '8':
+        case '08':
           Data.month = 'AUG';
           Data.quarter = 'Q3';
           break;
-        case '9':
+        case '09':
           Data.month = 'SEP';
           Data.quarter = 'Q3';
           break;
