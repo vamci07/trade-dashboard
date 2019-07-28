@@ -132,10 +132,21 @@ function History(props) {
       }
     },
     {
+      name: "outcome",
+      options: {
+        label: 'Outcome',
+        filter: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const nf = value;
+          return nf.toUpperCase();
+        }
+      }
+    },
+    {
       name: "gain",
       options: {
         label: 'Gain / Loss',
-        filter: true,
+        filter: true
         }
     },
     {
