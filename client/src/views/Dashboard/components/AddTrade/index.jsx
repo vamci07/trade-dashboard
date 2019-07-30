@@ -11,7 +11,7 @@ import {
   FormControlLabel,
   Typography
 } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
+import { blue, red } from '@material-ui/core/colors';
 import AxiosExample from 'components/Autocomplete';
 import validate from 'validate.js';
 import _ from 'underscore';
@@ -198,6 +198,7 @@ function AddTrade(props) {
           {showstockError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.stock[0]}
                 </Typography>
@@ -228,6 +229,7 @@ function AddTrade(props) {
           {showactionError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.action[0]}
                 </Typography>
@@ -244,6 +246,7 @@ function AddTrade(props) {
           {showstockquantityError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.stockquantity[0]}
                 </Typography>
@@ -260,6 +263,7 @@ function AddTrade(props) {
           {showstartingpriceError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.startingprice[0]}
                 </Typography>
@@ -276,6 +280,7 @@ function AddTrade(props) {
           {showtargetpriceError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.targetprice[0]}
                 </Typography>
@@ -292,6 +297,7 @@ function AddTrade(props) {
           {showstoplossError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.stoploss[0]}
                 </Typography>
@@ -308,6 +314,7 @@ function AddTrade(props) {
           {showreasonfortradeError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.reasonfortrade[0]}
                 </Typography>
@@ -324,6 +331,7 @@ function AddTrade(props) {
           {showclosingpriceError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}
                 >
                   {errors.closingprice[0]}
                 </Typography>

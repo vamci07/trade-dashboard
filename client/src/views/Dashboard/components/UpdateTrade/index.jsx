@@ -11,7 +11,7 @@ import {
   FormControlLabel,
   Typography
 } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
+import { blue, red} from '@material-ui/core/colors';
 import validate from 'validate.js';
 import _ from 'underscore';
 import schema from './schema';
@@ -139,60 +139,60 @@ function UpdateTrade(props) {
 
   function evaluateOutcome() {
     // calculate gain
-    if (updateTradeObj.closingprice) {
-      if (updateTradeObj.action.toLowerCase() === 'buy') {
-        updateTradeObj.gain = (
-          (updateTradeObj.closingprice - updateTradeObj.startingprice) *
-          updateTradeObj.stockquantity
+    if (values.closingprice) {
+      if (values.action.toLowerCase() === 'buy') {
+        values.gain = (
+          (values.closingprice - values.startingprice) *
+          values.stockquantity
         ).toFixed(2);
 
-        if (updateTradeObj.closingprice > updateTradeObj.startingprice) {
-          updateTradeObj.outcome = 'win';
+        if (values.closingprice > values.startingprice) {
+          values.outcome = 'win';
         } else {
-          updateTradeObj.outcome = 'loss';
+          values.outcome = 'loss';
         }
 
         const algoPercent = 0.05;
         if (
-          (updateTradeObj.closingprice >
-            updateTradeObj.targetprice * (1 - algoPercent) &&
-          updateTradeObj.closingprice <
-            updateTradeObj.targetprice * (1 + algoPercent))  ||
-            (updateTradeObj.closingprice >
-              updateTradeObj.stoploss * (1 - algoPercent) &&
-            updateTradeObj.closingprice <
-              updateTradeObj.stoploss * (1 + algoPercent))
+          (values.closingprice >
+            values.targetprice * (1 - algoPercent) &&
+          values.closingprice <
+            values.targetprice * (1 + algoPercent))  ||
+            (values.closingprice >
+              values.stoploss * (1 - algoPercent) &&
+            values.closingprice <
+              values.stoploss * (1 + algoPercent))
         ) {
-          updateTradeObj.followedplan = 'Y';
-        } else updateTradeObj.followedplan = 'N';
+          values.followedplan = 'Y';
+        } else values.followedplan = 'N';
       } else {
-        updateTradeObj.gain = (
-          (updateTradeObj.startingprice - updateTradeObj.closingprice) *
-          updateTradeObj.stockquantity
+        values.gain = (
+          (values.startingprice - values.closingprice) *
+          values.stockquantity
         ).toFixed(2);
-        if (updateTradeObj.closingprice < updateTradeObj.startingprice) {
-          updateTradeObj.outcome = 'win';
+        if (values.closingprice < values.startingprice) {
+          values.outcome = 'win';
         } else {
-          updateTradeObj.outcome = 'loss';
+          values.outcome = 'loss';
         }
 
         const algoPercent = 0.05;
         if (
-          (updateTradeObj.closingprice >
-            updateTradeObj.targetprice * (1 - algoPercent) &&
-          updateTradeObj.closingprice <
-            updateTradeObj.targetprice * (1 + algoPercent)) ||
-          (updateTradeObj.closingprice >
-            updateTradeObj.stoploss * (1 - algoPercent) &&
-          updateTradeObj.closingprice <
-            updateTradeObj.stoploss * (1 + algoPercent))
+          (values.closingprice >
+            values.targetprice * (1 - algoPercent) &&
+          values.closingprice <
+            values.targetprice * (1 + algoPercent)) ||
+          (values.closingprice >
+            values.stoploss * (1 - algoPercent) &&
+          values.closingprice <
+            values.stoploss * (1 + algoPercent))
         ) {
-          updateTradeObj.followedplan = 'Y';
-        } else updateTradeObj.followedplan = 'N';
+          values.followedplan = 'Y';
+        } else values.followedplan = 'N';
       }
     } else {
-      updateTradeObj.gain = '';
-      updateTradeObj.outcome = '';
+      values.gain = '';
+      values.outcome = '';
     }
   }
 
@@ -286,6 +286,7 @@ function UpdateTrade(props) {
           {showactionError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}                 
                 >
                   {errors.action[0]}
                 </Typography>
@@ -302,6 +303,7 @@ function UpdateTrade(props) {
           {showstockquantityError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}                  
                 >
                   {errors.stockquantity[0]}
                 </Typography>
@@ -318,6 +320,7 @@ function UpdateTrade(props) {
           {showstartingpriceError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}                  
                 >
                   {errors.startingprice[0]}
                 </Typography>
@@ -334,6 +337,7 @@ function UpdateTrade(props) {
           {showtargetpriceError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}                  
                 >
                   {errors.targetprice[0]}
                 </Typography>
@@ -350,6 +354,7 @@ function UpdateTrade(props) {
           {showstoplossError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}                  
                 >
                   {errors.stoploss[0]}
                 </Typography>
@@ -366,6 +371,7 @@ function UpdateTrade(props) {
           {showreasonfortradeError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}                  
                 >
                   {errors.reasonfortrade[0]}
                 </Typography>
@@ -382,6 +388,7 @@ function UpdateTrade(props) {
           {showclosingpriceError && (
                 <Typography
                   variant="body2"
+                  style={{ color : red[300] }}                  
                 >
                   {errors.closingprice[0]}
                 </Typography>
