@@ -8,27 +8,79 @@ import {
   Button,
   RadioGroup,
   Radio,
-  FormControlLabel
+  FormControlLabel,
+  Typography
 } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
+import validate from 'validate.js';
+import _ from 'underscore';
+import schema from './schema';
 
 function UpdateTrade(props) {
   const { open, tradeObj } = props;
-  const [updateTradeObj, setUpdateTradeObj] = useState({});
+  const [updateTradeObj, setUpdateTradeObj] = useState({
+    values: {
+    _id: '',
+    stock: '',
+    stockname: '',
+    action: '',
+    stockquantity: null,
+    startingprice: null,
+    stoploss: null,
+    targetprice: null,
+    reasonfortrade: '',
+    closingprice: null,
+    reasonforexit: '',
+    emotionalstate: '',
+    outcome: '',
+    gain: '',
+    followedplan: '',
+    owner: [
+      {
+        email: props.user.email,
+        name: props.user.name
+      }
+    ]
+    },
+    touched: {
+    stock: false,
+    action: false,
+    stockquantity: false,
+    startingprice: false,
+    stoploss: false,
+    targetprice: false,
+    reasonfortrade: false,
+    closingprice: false,
+    },
+    errors: {
+    stock: null,
+    action: null,
+    stockquantity: null,
+    startingprice: null,
+    stoploss: null,
+    targetprice: null,
+    reasonfortrade: null,
+    closingprice: null,
+    },
+    isValid: false,
+    isLoading: false,
+    submitError: null
+  });
 
   useEffect(() => {
     setUpdateTradeObj({
       ...updateTradeObj,
+      values: {
       _id: tradeObj._id || null,
       stock: tradeObj.stock,
       stockName: tradeObj.stockname,
       action: tradeObj.action,
-      stockquantity: tradeObj.stockquantity,
-      startingprice: tradeObj.startingprice,
-      stoploss: tradeObj.stoploss,
-      targetprice: tradeObj.targetprice,
+      stockquantity: String(tradeObj.stockquantity),
+      startingprice:  String(tradeObj.startingprice),
+      stoploss:  String(tradeObj.stoploss),
+      targetprice:  String(tradeObj.targetprice),
       reasonfortrade: tradeObj.reasonfortrade,
-      closingprice: tradeObj.closingprice,
+      closingprice:  tradeObj.closingprice,
       reasonforexit: tradeObj.reasonforexit,
       emotionalstate: tradeObj.emotionalstate,
       outcome: tradeObj.outcome,
@@ -40,14 +92,49 @@ function UpdateTrade(props) {
           name: props.user.name
         }
       ]
+    },
+    touched: {
+    stock: false,
+    action: false,
+    stockquantity: false,
+    startingprice: false,
+    stoploss: false,
+    targetprice: false,
+    reasonfortrade: false,
+    closingprice: false,
+    },
+    errors: {
+    stock: null,
+    action: null,
+    stockquantity: null,
+    startingprice: null,
+    stoploss: null,
+    targetprice: null,
+    reasonfortrade: null,
+    closingprice: null,
+    },
+    isValid: false,
+    isLoading: false,
+    submitError: null
     });
   }, [tradeObj]);
 
-  function handleChange(event) {
-    setUpdateTradeObj({
-      ...updateTradeObj,
-      [event.target.name]: event.target.value
-    });
+  const validateForm = _.debounce(() => {
+    const { values } = updateTradeObj;
+    const newState = { ...updateTradeObj };
+    const errors = validate(values, schema);
+    newState.errors = errors || {};
+    newState.isValid = errors ? false : true;
+    setUpdateTradeObj(newState);
+  }, 300);
+
+  function handleChange(field, value) {
+    const newState = { ...updateTradeObj };
+    newState.submitError = null;
+    newState.touched[field] = true;
+    newState.values[field] = value;
+    setUpdateTradeObj(newState);
+    validateForm();
   }
 
   function evaluateOutcome() {
@@ -111,8 +198,28 @@ function UpdateTrade(props) {
 
   function handleUpdate() {
     evaluateOutcome();
-    props.updateTradeFn(updateTradeObj);
+    props.updateTradeFn(values);
   }
+
+
+  const {
+    isLoading,
+    values,
+    touched,
+    errors,
+    isValid,
+    submitError
+  } = updateTradeObj;
+
+//  console.log(updateTradeObj);
+//  const showstockError = touched.stock && errors.stock;
+  const showactionError = touched.action && errors.action;
+  const showstockquantityError = touched.stockquantity && errors.stockquantity;
+  const showstartingpriceError = touched.startingprice && errors.startingprice;
+  const showtargetpriceError = touched.targetprice && errors.targetprice;
+  const showstoplossError = touched.stoploss && errors.stoploss;
+  const showreasonfortradeError = touched.reasonfortrade && errors.reasonfortrade;
+  const showclosingpriceError = touched.closingprice && errors.closingprice;
 
   return (
     <Dialog
@@ -141,24 +248,24 @@ function UpdateTrade(props) {
               margin: '16px 8px'
             }}
           >
-            {updateTradeObj.stockName} - {updateTradeObj.stock}
+            {values.stockName} - {values.stock}
           </div>
         </div>
         <div style={{ width: '100%' }}>
           <RadioGroup
             name="action"
-            onChange={event => handleChange(event)}
+            onChange={event => handleChange('action', event.target.value)}
             style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center'
             }}
-            value={updateTradeObj.action}
+            value={values.action}
           >
             <FormControlLabel
               control={
                 <Radio
-                  checked={updateTradeObj.action === 'buy'}
+                  checked={values.action === 'buy'}
                   color="primary"
                 />
               }
@@ -168,7 +275,7 @@ function UpdateTrade(props) {
             <FormControlLabel
               control={
                 <Radio
-                  checked={updateTradeObj.action === 'sell'}
+                  checked={values.action === 'sell'}
                   color="primary"
                 />
               }
@@ -176,67 +283,133 @@ function UpdateTrade(props) {
               value="sell"
             />
           </RadioGroup>
+          {showactionError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.action[0]}
+                </Typography>
+              )}
         </div>
-        <TextField
-          label="Quantity"
-          name="stockquantity"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.stockquantity}
-          variant="filled"
-        />
-        <TextField
-          label="Starting Price"
-          name="startingprice"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.startingprice}
-          variant="filled"
-        />
-        <TextField
-          label="Target Price"
-          name="targetprice"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.targetprice}
-          variant="filled"
-        />
-        <TextField
-          label="Stoploss"
-          name="stoploss"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.stoploss}
-          variant="filled"
-        />
-        <TextField
-          label="Reason for Trade"
-          name="reasonfortrade"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.reasonfortrade}
-          variant="filled"
-        />
-        <TextField
-          label="Closing Price"
-          name="closingprice"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.closingprice}
-          variant="filled"
-        />
-        <TextField
-          label="Reason for Exit"
-          name="reasonforexit"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.reasonforexit}
-          variant="filled"
-        />
-        <TextField
-          label="Emotional State"
-          name="emotionalstate"
-          onChange={event => handleChange(event)}
-          value={updateTradeObj.emotionalstate}
-          variant="filled"
-        />
+        <div>
+          <TextField
+            label="Quantity"
+            name="stockquantity"
+            onChange={event => handleChange('stockquantity', event.target.value)}
+            value={values.stockquantity}
+            variant="filled"
+          />
+          {showstockquantityError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.stockquantity[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Starting Price"
+            name="startingprice"
+            onChange={event => handleChange('startingprice', event.target.value)}
+            value={values.startingprice}
+            variant="filled"
+          />
+          {showstartingpriceError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.startingprice[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Target Price"
+            name="targetprice"
+            onChange={event => handleChange('targetprice', event.target.value)}
+            value={values.targetprice}
+            variant="filled"
+          />
+          {showtargetpriceError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.targetprice[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Stoploss"
+            name="stoploss"
+            onChange={event => handleChange('stoploss', event.target.value)}
+            value={values.stoploss}
+            variant="filled"
+          />
+          {showstoplossError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.stoploss[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Reason for Trade"
+            name="reasonfortrade"
+            onChange={event => handleChange('reasonfortrade', event.target.value)}
+            value={values.reasonfortrade}
+            variant="filled"
+          />
+          {showreasonfortradeError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.reasonfortrade[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Closing Price"
+            name="closingprice"
+            onChange={event => handleChange('closingprice', event.target.value)}
+            value={values.closingprice}
+            variant="filled"
+          />
+          {showclosingpriceError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.closingprice[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Reason for Exit"
+            name="reasonforexit"
+            onChange={event => handleChange('reasonforexit', event.target.value)}
+            value={values.reasonforexit}
+            variant="filled"
+          />
+        </div>
+        <div>
+          <TextField
+            label="Emotional State"
+            name="emotionalstate"
+            onChange={event => handleChange('emotionalstate', event.target.value)}
+            value={values.emotionalstate}
+            variant="filled"
+          />
+        </div>
       </DialogContent>
       <DialogActions>
         <Button
           onClick={handleUpdate}
+          disabled={!isValid}
           variant="contained"
         >
           Update

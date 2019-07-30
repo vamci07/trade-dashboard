@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
 import {
   Dialog,
   DialogTitle,
@@ -12,67 +9,59 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
-  Typography,
-  withStyles} from '@material-ui/core';
+  Typography
+} from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
 import AxiosExample from 'components/Autocomplete';
-import _ from 'underscore';
 import validate from 'validate.js';
-import schema from './1.';
-import { connect } from 'react-redux';
-import styles from './styles';
-import NumberFormat from 'react-number-format';
+import _ from 'underscore';
+import schema from './schema';
+
 
 function AddTrade(props) {
   const { open } = props;
   const [newTrade, setNewTrade] = useState({
     values: {
-      stock: '',
-      stockname: '',
-      action: '',
-      stockquantity: null,
-      startingprice: null,
-      stoploss: null,
-      targetprice: null,
-      reasonfortrade: '',
-      closingprice: null,
-      reasonforexit: '',
-      emotionalstate: '',
-      outcome: '',
-      gain: '',
-      followedplan: '',
-      owner: [
-        {
-          email: props.user.email,
-          name: props.user.name
-        }
-      ]
+    stock: '',
+    stockname: '',
+    action: '',
+    stockquantity: null,
+    startingprice: null,
+    stoploss: null,
+    targetprice: null,
+    reasonfortrade: '',
+    closingprice: null,
+    reasonforexit: '',
+    emotionalstate: '',
+    outcome: '',
+    gain: '',
+    followedplan: '',
+    owner: [
+      {
+        email: props.user.email,
+        name: props.user.name
+      }
+    ]
     },
     touched: {
-      stock: '',
- //     stockname: '',
-      action: '',
-      stockquantity: null,
-      startingprice: null,
-      stoploss: null,
-      targetprice: null,
-      reasonfortrade: '',
-      closingprice: null,
-      reasonforexit: '',
-      emotionalstate: ''
+    stock: false,
+    action: false,
+    stockquantity: false,
+    startingprice: false,
+    stoploss: false,
+    targetprice: false,
+    reasonfortrade: false,
+    closingprice: false,
     },
     errors: {
-      stock: '',
- //     stockname: '',
-      action: '',
-      stockquantity: null,
-      startingprice: null,
-      stoploss: null,
-      targetprice: null,
-      reasonfortrade: '',
-      closingprice: null,
-      reasonforexit: '',
-      emotionalstate: ''
+    stock: null,
+    action: null,
+    stockquantity: null,
+    startingprice: null,
+    stoploss: null,
+    targetprice: null,
+    reasonfortrade: null,
+    closingprice: null,
     },
     isValid: false,
     isLoading: false,
@@ -86,28 +75,34 @@ function AddTrade(props) {
     newState.errors = errors || {};
     newState.isValid = errors ? false : true;
     setNewTrade(newState);
-  }, 2000);
-
+  }, 300);
 
   const handleStockSelection = item => {
+/*
     setNewTrade({
       ...newTrade,
       stock: item.symbol,
       stockname: item.name
-    });
+    }); 
+*/
+    const newState = { ...newTrade };
+    newState.submitError = null;
+    let field = 'stock';
+    let fieldname = 'stockname';
+    newState.touched[field] = true;
+    newState.values[field] = item.symbol;
+    newState.values[fieldname] = item.name;
+    setNewTrade(newState);
+    validateForm();
   };
 
-  function handleChange(field,event) {
+  function handleChange(field, value) {
     const newState = { ...newTrade };
     newState.submitError = null;
     newState.touched[field] = true;
-    newState.values[field] = event.target.value;
-    setNewTrade(newState); 
- /*   setNewTrade({
-      ...newTrade,
-      [event.target.name]: event.target.value
-    });*/
-   validateForm();
+    newState.values[field] = value;
+    setNewTrade(newState);
+    validateForm();
   }
 
   function evaluateOutcome() {
@@ -160,25 +155,12 @@ function AddTrade(props) {
     }
   }
 
-  async function handleCreate() {
+  function handleCreate() {
     evaluateOutcome();
-//    props.addTrade(newTrade);
-
-    try {
-      const newState = { ...newTrade };
-      newState.isLoading = true;
-      setNewTrade(newState);
-      await props.addTrade(newTrade);;
-    } catch (error) {
-      newTrade({
-        ...newTrade,
-        isLoading: false,
-        submitError: error
-      });
-    }
+    props.addTrade(values);
   }
 
-  const { classes } = props;
+  //const { classes, className } = props;
   const {
     isLoading,
     values,
@@ -188,38 +170,14 @@ function AddTrade(props) {
     submitError
   } = newTrade;
 
-  const showActionError = errors.action;
-  const showstockquantityError = errors.stockquantity;
+  const showstockError = touched.stock && errors.stock;
+  const showactionError = touched.action && errors.action;
+  const showstockquantityError = touched.stockquantity && errors.stockquantity;
   const showstartingpriceError = touched.startingprice && errors.startingprice;
-  const showstoplossError = touched.stoploss && errors.stoploss;
   const showtargetpriceError = touched.targetprice && errors.targetprice;
+  const showstoplossError = touched.stoploss && errors.stoploss;
   const showreasonfortradeError = touched.reasonfortrade && errors.reasonfortrade;
-
-  function NumberFormatCustom(props) {
-    const { inputRef, onChange, ...other } = props;
-  
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={inputRef}
-        onValueChange={values => {
-          onChange({
-            target: {
-              value: values.value,
-            },
-          });
-        }}
-        thousandSeparator
-      />
-    );
-  }
-
-
-
-  NumberFormatCustom.propTypes = {
-    inputRef: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
+  const showclosingpriceError = touched.closingprice && errors.closingprice;
 
   return (
     <Dialog
@@ -237,11 +195,18 @@ function AddTrade(props) {
       <DialogContent>
         <div style={{ width: '100%', justifyContent: 'center' }}>
           <AxiosExample handleStockSelection={handleStockSelection} />
+          {showstockError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.stock[0]}
+                </Typography>
+              )}
         </div>
         <div style={{ width: '100%' }}>
           <RadioGroup
             name="action"
-            onChange={event => handleChange('action',  event)}
+            onChange={event => handleChange('action', event.target.value)}
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -260,90 +225,128 @@ function AddTrade(props) {
               value="sell"
             />
           </RadioGroup>
-          {showActionError && (
+          {showactionError && (
                 <Typography
-                className={classes.fieldError}
                   variant="body2"
                 >
                   {errors.action[0]}
                 </Typography>
               )}
         </div>
-        <div className={classes.field}>
+        <div>
           <TextField
             label="Quantity"
             name="stockquantity"
-            onChange={event => handleChange('stockquantity',  event)}
+            onChange={event => handleChange('stockquantity', event.target.value)}
             value={values.stockquantity}
             variant="filled"
-/*            InputProps={{
-              inputComponent: NumberFormatCustom,
-            }}*/
           />
           {showstockquantityError && (
                 <Typography
-                className={classes.fieldError}
                   variant="body2"
                 >
                   {errors.stockquantity[0]}
                 </Typography>
               )}
+        </div>        
+        <div>
+          <TextField
+            label="Starting Price"
+            name="startingprice"
+            onChange={event => handleChange('startingprice', event.target.value)}
+            value={values.startingprice}
+            variant="filled"
+          />
+          {showstartingpriceError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.startingprice[0]}
+                </Typography>
+              )}
         </div>
-        <TextField
-          label="Starting Price"
-          name="startingprice"
-          onChange={event => handleChange('startingprice',  event)}
-          value={values.startingprice}
-          variant="filled"
- /*         InputProps={{
-            inputComponent: NumberFormatCustom,
-          }} */
-        />
-        <TextField
-          label="Target Price"
-          name="targetprice"
-          onChange={event => handleChange('targetprice',  event)}
-          value={values.targetprice}
-          variant="filled"
-          InputProps={{
-            inputComponent: NumberFormatCustom,
-          }}
-        />
-        <TextField
-          label="Stoploss"
-          name="stoploss"
-          onChange={event => handleChange('stoploss',  event)}
-          value={values.stoploss}
-          variant="filled"
-        />
-        <TextField
-          label="Reason for Trade"
-          name="reasonfortrade"
-          onChange={event => handleChange('reasonfortrade',  event)}
-          value={values.reasonfortrade}
-          variant="filled"
-        />
-        <TextField
-          label="Closing Price"
-          name="closingprice"
-          onChange={event => handleChange('closingprice',  event)}
-          value={values.closingprice}
-          variant="filled"
-        />
-        <TextField
-          label="Reason for Exit"
-          name="reasonforexit"
-          onChange={event => handleChange('reasonforexit',  event)}
-          value={values.reasonforexit}
-          variant="filled"
-        />
-        <TextField
-          label="Emotional State"
-          name="emotionalstate"
-          onChange={event => handleChange('emotionalstate',  event)}
-          value={values.emotionalstate}
-          variant="filled"
-        />
+        <div>
+          <TextField
+            label="Target Price"
+            name="targetprice"
+            onChange={event => handleChange('targetprice', event.target.value)}
+            value={values.targetprice}
+            variant="filled"
+          />
+          {showtargetpriceError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.targetprice[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Stoploss"
+            name="stoploss"
+            onChange={event => handleChange('stoploss', event.target.value)}
+            value={values.stoploss}
+            variant="filled"
+          />
+          {showstoplossError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.stoploss[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Reason for Trade"
+            name="reasonfortrade"
+            onChange={event => handleChange('reasonfortrade', event.target.value)}
+            value={values.reasonfortrade}
+            variant="filled"
+          />
+          {showreasonfortradeError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.reasonfortrade[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Closing Price"
+            name="closingprice"
+            onChange={event => handleChange('closingprice', event.target.value)}
+            value={values.closingprice}
+            variant="filled"
+          />
+          {showclosingpriceError && (
+                <Typography
+                  variant="body2"
+                >
+                  {errors.closingprice[0]}
+                </Typography>
+              )}
+        </div>
+        <div>
+          <TextField
+            label="Reason for Exit"
+            name="reasonforexit"
+            onChange={event => handleChange('reasonforexit', event.target.value)}
+            value={values.reasonforexit}
+            variant="filled"
+          />
+        </div>
+        <div>
+          <TextField
+            label="Emotional State"
+            name="emotionalstate"
+            onChange={event => handleChange('emotionalstate', event.target.value)}
+            value={values.emotionalstate}
+            variant="filled"
+          />
+        </div>
       </DialogContent>
       <DialogActions>
         <Button
@@ -358,24 +361,4 @@ function AddTrade(props) {
   );
 }
 
-AddTrade.propTypes = {
-  auth: PropTypes.object,
-  className: PropTypes.string,
-  classes: PropTypes.object.isRequired,
-  errors: PropTypes.object
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors
-});
-
-export default connect(
-  mapStateToProps
-)(
-  compose(
-    withRouter,
-    withStyles(styles)
-  )(AddTrade)
-);
-
+export default AddTrade;

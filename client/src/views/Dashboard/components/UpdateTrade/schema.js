@@ -1,10 +1,4 @@
 export default {
-    stock: {
-      presence: { allowEmpty: false, message: 'is required' },
-      length: {
-        maximum: 128
-      }
-    },
     action: {
       presence: { allowEmpty: false, message: 'is required' },
       length: {

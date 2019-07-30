@@ -64,12 +64,12 @@ function Dashboard(props) {
     tradeObj: {
       stock: '',
       action: '',
-      stockquantity: 0,
-      startingprice: 0,
-      stoploss: 0,
-      targetprice: 0,
+      stockquantity: null,
+      startingprice: null,
+      stoploss: null,
+      targetprice: null,
       reasonfortrade: '',
-      closingprice: 0,
+      closingprice: null,
       reasonforexit: '',
       emotionalstate: '',
       owner: [
@@ -98,7 +98,7 @@ function Dashboard(props) {
   }
 
   async function updateTradeFn(updateTradeObj) {
-    console.log(updateTradeObj);
+//    console.log(updateTradeObj);
     await props.updateTrade(updateTradeObj);
     // await dispatch({ type: 'UPDATETRADEOBJ', updateTradeObj });
     dispatch({ type: 'UDPATETRADEDIALOG' });
@@ -225,7 +225,7 @@ function Dashboard(props) {
                       } else {
                         color = green[400];
                       }
-                      console.log(trade);
+//                      console.log(trade);
                       return (
                         <StyledCard
                           color={color}
