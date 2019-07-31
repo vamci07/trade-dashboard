@@ -267,6 +267,7 @@ function UpdateTrade(props) {
                 <Radio
                   checked={values.action === 'buy'}
                   color="primary"
+                  disabled={true}
                 />
               }
               label="Buy"
@@ -277,6 +278,7 @@ function UpdateTrade(props) {
                 <Radio
                   checked={values.action === 'sell'}
                   color="primary"
+                  disabled={true}
                 />
               }
               label="Sell"
