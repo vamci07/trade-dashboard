@@ -28,7 +28,7 @@ export default {
         maximum: 64
       },
       format: {
-        pattern: "^[0-9]+",
+        pattern: "^[0-9]+(\\.[0-9]{1,2})?$",
         flags: "i",
         message: "must be numeric"
       }
@@ -39,7 +39,7 @@ export default {
         maximum: 64
       },
       format: {
-        pattern: "^[0-9]+",
+        pattern: "^[0-9]+(\\.[0-9]{2})?$",
         flags: "i",
         message: "must be numeric"
       }
@@ -50,7 +50,7 @@ export default {
         maximum: 64
       },
       format: {
-        pattern: "^[0-9]+",
+        pattern: "^[0-9]+(\\.[0-9]{2})?$",
         flags: "i",
         message: "must be numeric"
       }
@@ -66,7 +66,7 @@ export default {
         maximum: 64
       },
       format: {
-        pattern: "^[0-9]+",
+        pattern: "^$|^[0-9]+(\\.[0-9]{2})?$",
         flags: "i",
         message: "must be numeric"
       }
