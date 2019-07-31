@@ -3,11 +3,18 @@ open /Applications/Google\ Chrome.app --args --disable-web-security --user-data-
 For Windows:
 "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --args --disable-web-security --user-data-dir="C:\chrome_temp"
 
-Go to server folder
+On one Command prompt
 
-npm run server
+    cd trade-dashboard
 
+    cd server
 
-on separate command window, go to client folder
+    npm run server
 
-npm start
+On another command prompt
+
+    cd trade-dashboard
+
+    cd client
+
+    npm start
